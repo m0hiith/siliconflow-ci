@@ -322,6 +322,9 @@ has, the same command reports:
 
 ## Local setup
 
+> **Quick start:** `cp .env.example .env`, set a Postgres password, then
+> `docker compose up --build -d` and open <http://localhost:8080>.
+
 Needs Docker with Compose. The firmware step also needs CMake, Ninja and a C11
 compiler.
 
