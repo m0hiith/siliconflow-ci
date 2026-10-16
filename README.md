@@ -107,6 +107,74 @@ reaches a verdict.**
   the stored ELF) and the release ref. Any missing measurement fails its gate.
   Pull request builds are never eligible.
 
+### Passed is not releasable
+
+<p align="center">
+  <img src="docs/images/passed-vs-releasable.svg" alt="Two separate questions: did the build pass, and is the artifact release-eligible" width="100%">
+</p>
+
+### Build status lifecycle
+
+```mermaid
+stateDiagram-v2
+    direction LR
+    [*] --> queued
+    queued --> running
+    queued --> cancelled
+    running --> passed
+    running --> failed
+    running --> cancelled
+    running --> timed_out
+    running --> errored
+    passed --> [*]
+    failed --> [*]
+    cancelled --> [*]
+    timed_out --> [*]
+    errored --> [*]
+    note right of errored : CI infrastructure failed, not the firmware
+```
+
+Terminal states (`passed`, `failed`, `cancelled`, `timed_out`, `errored`)
+never change.
+
+### How a run report reaches a verdict
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant R as Runner (Actions job)
+    participant A as SiliconFlow API
+    participant W as Worker
+    participant G as GitHub
+    R->>A: POST /api/v1/runs/report<br/>run report + OIDC JWT
+    A->>A: verify JWT claims match repo, run, attempt, SHA
+    A-->>R: 202 accepted (stored, ingest queued)
+    W->>G: download Actions artifact (GitHub App)
+    W->>W: re-hash files, check manifest, store by SHA-256
+    W->>W: parse JUnit, classify stage logs
+    G-->>A: workflow_run completed (HMAC-signed webhook)
+    A->>A: transitions.py settles build status
+    W->>W: evaluate gates.yml at the build's commit
+```
+
+### Failure classes
+
+When a build fails, the stage log is classified so you know *who* needs to act.
+
+| Class | Typical cause | Who fixes it |
+| --- | --- | --- |
+| `compile_error` | `error:` from GCC, `-Werror`, CMake errors | Firmware dev |
+| `link_error` | undefined reference, multiple definition | Firmware dev |
+| `size_overflow` | `region 'FLASH' overflowed` | Firmware dev |
+| `test_failure` | Unity `FAIL`, sanitizer runtime error | Firmware dev |
+| `analysis` | cppcheck error-severity finding | Firmware dev |
+| `infra_hw` | no J-Link / CMSIS-DAP probe, OpenOCD init failed | Lab / hardware |
+| `infra_ci` | disk full, compiler OOM-killed, DNS failure | CI / platform |
+
+The rules live in [classify.py](backend/app/services/classify.py) and each
+one is tested against real captured logs in
+[backend/tests/fixtures/logs/](backend/tests/fixtures/logs/).
+
 Details: [run reports](docs/run-reports.md) · [release gates](docs/release-gates.md) ·
 [GitHub App](docs/github-app.md) · [hardware-in-the-loop](docs/hil.md)
 
