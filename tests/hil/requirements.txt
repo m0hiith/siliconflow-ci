@@ -1,0 +1,4 @@
+# Host side of tests/hil (docs/hil.md). Python >= 3.11.
+pytest==9.1.1
+pyserial==3.5
+bleak==3.0.2  # only for test_ble_advertising

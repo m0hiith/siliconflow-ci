@@ -1,0 +1,300 @@
+{
+  "build_id": "bld_01M4ZJHDNBJ5F6TCRCTPHYTSSX",
+  "responses": {
+    "/api/v1/builds/bld_01M4ZJHDNBJ5F6TCRCTPHYTSSX": {
+      "artifacts_state": "stored",
+      "author_login": "m0hiith",
+      "branch": "main",
+      "commit_message": "Expect a second rising edge in noisy-signal test",
+      "commit_sha": "41d8e37920445bf2b14232549a04360c622148b8",
+      "commit_url": "https://github.com/acme/fw/commit/41d8e37920445bf2b14232549a04360c622148b8",
+      "created_at": "2026-10-15T10:43:15.233527Z",
+      "failure_class": "test_failure",
+      "finished_at": "2026-10-15T06:40:13Z",
+      "gh_run_attempt": 1,
+      "gh_run_id": 30433701,
+      "id": "bld_01M4ZJHDNBJ5F6TCRCTPHYTSSX",
+      "number": 2,
+      "pr_number": null,
+      "profile": "host-cmake",
+      "project_id": "prj_01M4ZJHDB396ZG8QDQ8QWTT5SF",
+      "queued_at": "2026-10-15T06:39:51Z",
+      "ref": "refs/heads/main",
+      "repository": "acme/fw",
+      "repository_id": "rep_01M4ZJHDB5X6F43E9789785HRZ",
+      "run_url": "https://github.com/acme/fw/actions/runs/30433701/attempts/1",
+      "sdk": {},
+      "started_at": "2026-10-15T06:40:00Z",
+      "status": "failed",
+      "status_reason": "required stages did not pass: test (failed), analyze (skipped), package (skipped)",
+      "toolchain": {
+        "cmake": "cmake version 3.28.3",
+        "gcc": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
+      },
+      "trigger": "push"
+    },
+    "/api/v1/builds/bld_01M4ZJHDNBJ5F6TCRCTPHYTSSX/artifacts": [],
+    "/api/v1/builds/bld_01M4ZJHDNBJ5F6TCRCTPHYTSSX/gates": [],
+    "/api/v1/builds/bld_01M4ZJHDNBJ5F6TCRCTPHYTSSX/logs/analyze": {
+      "detail": "no log stored for this stage",
+      "status": 404
+    },
+    "/api/v1/builds/bld_01M4ZJHDNBJ5F6TCRCTPHYTSSX/logs/compile": {
+      "error_count": 0,
+      "errors": [],
+      "failure_class": null,
+      "first_error": null,
+      "lines": [
+        "[1/15] Generating version.h from git describe",
+        "[2/15] Building C object CMakeFiles/hal_fake.dir/src/hal_fake.c.o",
+        "[3/15] Building C object tests/CMakeFiles/test_debounce.dir/test_debounce.c.o",
+        "[4/15] Building C object CMakeFiles/sensor_logic.dir/src/sensor_logic.c.o",
+        "[5/15] Building C object tests/CMakeFiles/test_threshold.dir/test_threshold.c.o",
+        "[6/15] Building C object tests/CMakeFiles/test_moving_average.dir/test_moving_average.c.o",
+        "[7/15] Building C object CMakeFiles/firmware.dir/src/main.c.o",
+        "[8/15] Linking C static library libsensor_logic.a",
+        "[9/15] Linking C static library libhal_fake.a",
+        "[10/15] Linking C executable firmware",
+        "[11/15] Building C object _deps/unity-build/CMakeFiles/unity.dir/src/unity.c.o",
+        "[12/15] Linking C static library _deps/unity-build/libunity.a",
+        "[13/15] Linking C executable tests/test_moving_average",
+        "[14/15] Linking C executable tests/test_debounce",
+        "[15/15] Linking C executable tests/test_threshold"
+      ],
+      "offset": 0,
+      "stage": "compile",
+      "total_lines": 15,
+      "warning_count": 0,
+      "warnings": []
+    },
+    "/api/v1/builds/bld_01M4ZJHDNBJ5F6TCRCTPHYTSSX/logs/configure": {
+      "error_count": 0,
+      "errors": [],
+      "failure_class": null,
+      "first_error": null,
+      "lines": [
+        "-- The C compiler identification is GNU 13.3.0",
+        "-- Detecting C compiler ABI info",
+        "-- Detecting C compiler ABI info - done",
+        "-- Check for working C compiler: /usr/bin/cc - skipped",
+        "-- Detecting C compile features",
+        "-- Detecting C compile features - done",
+        "-- coverage target: configure with -DSFCI_COVERAGE=ON for meaningful results",
+        "-- Configuring done (3.5s)",
+        "-- Generating done (0.0s)",
+        "-- Build files have been written to: /__w/fw/fw/build"
+      ],
+      "offset": 0,
+      "stage": "configure",
+      "total_lines": 10,
+      "warning_count": 0,
+      "warnings": []
+    },
+    "/api/v1/builds/bld_01M4ZJHDNBJ5F6TCRCTPHYTSSX/logs/package": {
+      "detail": "no log stored for this stage",
+      "status": 404
+    },
+    "/api/v1/builds/bld_01M4ZJHDNBJ5F6TCRCTPHYTSSX/logs/test": {
+      "error_count": 3,
+      "errors": [
+        8,
+        15,
+        27
+      ],
+      "failure_class": "test_failure",
+      "first_error": {
+        "column": null,
+        "file": "/__w/fw/fw/firmware/tests/test_threshold.c",
+        "line": 75,
+        "line_number": 15,
+        "message": "test_noisy_signal_around_one_threshold: Expected 2 Was 1",
+        "path": "firmware/tests/test_threshold.c",
+        "url": "https://github.com/acme/fw/blob/41d8e37920445bf2b14232549a04360c622148b8/firmware/tests/test_threshold.c#L75"
+      },
+      "lines": [
+        "Internal ctest changing into directory: /__w/fw/fw/build",
+        "Test project /__w/fw/fw/build",
+        "    Start 1: test_debounce",
+        "1/3 Test #1: test_debounce ....................   Passed    0.00 sec",
+        "    Start 2: test_moving_average",
+        "2/3 Test #2: test_moving_average ..............   Passed    0.00 sec",
+        "    Start 3: test_threshold",
+        "3/3 Test #3: test_threshold ...................***Failed    0.00 sec",
+        "/__w/fw/fw/firmware/tests/test_threshold.c:91:test_init_rejects_inverted_or_equal_thresholds:PASS",
+        "/__w/fw/fw/firmware/tests/test_threshold.c:92:test_starts_low:PASS",
+        "/__w/fw/fw/firmware/tests/test_threshold.c:93:test_rising_exactly_at_high:PASS",
+        "/__w/fw/fw/firmware/tests/test_threshold.c:94:test_falling_exactly_at_low:PASS",
+        "/__w/fw/fw/firmware/tests/test_threshold.c:95:test_no_chatter_inside_band_while_low:PASS",
+        "/__w/fw/fw/firmware/tests/test_threshold.c:96:test_no_chatter_inside_band_while_high:PASS",
+        "/__w/fw/fw/firmware/tests/test_threshold.c:75:test_noisy_signal_around_one_threshold:FAIL: Expected 2 Was 1",
+        "/__w/fw/fw/firmware/tests/test_threshold.c:98:test_full_cycle_events_alternate:PASS",
+        "",
+        "-----------------------",
+        "8 Tests 1 Failures 0 Ignored ",
+        "FAIL",
+        "",
+        "",
+        "67% tests passed, 1 tests failed out of 3",
+        "",
+        "Total Test time (real) =   0.01 sec",
+        "",
+        "The following tests FAILED:",
+        "\t  3 - test_threshold (Failed)",
+        "Errors while running CTest"
+      ],
+      "offset": 0,
+      "stage": "test",
+      "total_lines": 29,
+      "warning_count": 0,
+      "warnings": []
+    },
+    "/api/v1/builds/bld_01M4ZJHDNBJ5F6TCRCTPHYTSSX/logs/test/search?q=fail:": {
+      "matches": [
+        15
+      ],
+      "query": "fail:",
+      "stage": "test",
+      "total": 1
+    },
+    "/api/v1/builds/bld_01M4ZJHDNBJ5F6TCRCTPHYTSSX/logs/test/search?q=threshold": {
+      "matches": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        28
+      ],
+      "query": "threshold",
+      "stage": "test",
+      "total": 11
+    },
+    "/api/v1/builds/bld_01M4ZJHDNBJ5F6TCRCTPHYTSSX/previous-passing": {
+      "build": {
+        "author_login": "m0hiith",
+        "branch": "main",
+        "commit_message": "Add hysteresis to threshold detector",
+        "commit_sha": "3c9fc2af798c6d5725210693151df0d61346eb06",
+        "created_at": "2026-10-15T10:43:14.957273Z",
+        "failure_class": null,
+        "finished_at": "2026-10-15T06:40:09Z",
+        "gh_run_attempt": 1,
+        "gh_run_id": 30433700,
+        "id": "bld_01M4ZJHDD6PXMZFX0BED1EP50G",
+        "number": 1,
+        "pr_number": null,
+        "profile": "host-cmake",
+        "project_id": "prj_01M4ZJHDB396ZG8QDQ8QWTT5SF",
+        "queued_at": "2026-10-15T06:39:43Z",
+        "ref": "refs/heads/main",
+        "repository_id": "rep_01M4ZJHDB5X6F43E9789785HRZ",
+        "started_at": "2026-10-15T06:39:52Z",
+        "status": "passed",
+        "status_reason": "workflow run succeeded and every required stage passed",
+        "trigger": "push"
+      },
+      "commits_between": 1,
+      "compare_url": "https://github.com/acme/fw/compare/3c9fc2af798c6d5725210693151df0d61346eb06...41d8e37920445bf2b14232549a04360c622148b8"
+    },
+    "/api/v1/builds/bld_01M4ZJHDNBJ5F6TCRCTPHYTSSX/size": {
+      "base_branch": "main",
+      "base_build": null,
+      "base_size": null,
+      "size": null
+    },
+    "/api/v1/builds/bld_01M4ZJHDNBJ5F6TCRCTPHYTSSX/stages": [
+      {
+        "exit_code": 0,
+        "finished_at": "2026-10-15T06:40:07Z",
+        "name": "configure",
+        "position": 0,
+        "required": true,
+        "started_at": "2026-10-15T06:40:03Z",
+        "status": "passed"
+      },
+      {
+        "exit_code": 0,
+        "finished_at": "2026-10-15T06:40:07Z",
+        "name": "compile",
+        "position": 1,
+        "required": true,
+        "started_at": "2026-10-15T06:40:07Z",
+        "status": "passed"
+      },
+      {
+        "exit_code": 8,
+        "finished_at": "2026-10-15T06:40:07Z",
+        "name": "test",
+        "position": 2,
+        "required": true,
+        "started_at": "2026-10-15T06:40:07Z",
+        "status": "failed"
+      },
+      {
+        "exit_code": null,
+        "finished_at": null,
+        "name": "analyze",
+        "position": 3,
+        "required": true,
+        "started_at": null,
+        "status": "skipped"
+      },
+      {
+        "exit_code": null,
+        "finished_at": null,
+        "name": "package",
+        "position": 4,
+        "required": true,
+        "started_at": null,
+        "status": "skipped"
+      }
+    ],
+    "/api/v1/builds/bld_01M4ZJHDNBJ5F6TCRCTPHYTSSX/tests": [
+      {
+        "classname": "test_debounce",
+        "duration_ms": 5,
+        "message": null,
+        "name": "test_debounce",
+        "outcome": "passed",
+        "suite": "(empty)"
+      },
+      {
+        "classname": "test_moving_average",
+        "duration_ms": 4,
+        "message": null,
+        "name": "test_moving_average",
+        "outcome": "passed",
+        "suite": "(empty)"
+      },
+      {
+        "classname": "test_threshold",
+        "duration_ms": 4,
+        "message": "Failed",
+        "name": "test_threshold",
+        "outcome": "failed",
+        "suite": "(empty)"
+      }
+    ],
+    "/api/v1/projects": [
+      {
+        "created_at": "2026-10-15T10:43:14.915548Z",
+        "default_branch": "main",
+        "id": "prj_01M4ZJHDB396ZG8QDQ8QWTT5SF",
+        "name": "Fw",
+        "repositories": [
+          {
+            "default_branch": "main",
+            "full_name": "acme/fw",
+            "id": "rep_01M4ZJHDB5X6F43E9789785HRZ"
+          }
+        ],
+        "slug": "fw"
+      }
+    ]
+  }
+}

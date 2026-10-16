@@ -1,0 +1,2 @@
+{"name":"configure","status":"passed","exit_code":0,"started_at":"2026-10-14T09:01:00Z","finished_at":"2026-10-14T09:01:04Z"}
+{"name":"compile","status":"failed","exit_code":1,"started_at":"2026-10-14T09:01:04Z","finished_at":"2026-10-14T09:01:09Z"}

@@ -1,0 +1,91 @@
+name: Firmware CI (siwx917-soc)
+
+# The SiWx917 SoC profile: firmware/siwx917 (sensor_logic on BRD4338A, from
+# the WiSeConnect example sl_si91x_blinky) generated with slc and built with
+# the Simplicity SDK's makefile. It proves the application builds for the real
+# part and packages the images used to flash it; it runs no tests.
+#
+# It runs in a private image that holds the Simplicity SDK, WiSeConnect,
+# slc-cli and the GNU Arm toolchain, and declares their versions in
+# /opt/sfci/versions.json. Pulling that image needs repository credentials,
+# so this workflow runs only on pushes to main and on tags: there is no
+# pull_request trigger, and fork pull requests never run it.
+#
+# A separate workflow, as for cortex-m4: SiliconFlow tracks one build per
+# workflow run attempt with one run report. The backend lists this workflow
+# and its required stages (SFCI_GITHUB_EXTRA_WORKFLOWS); keep them in step
+# with the steps below.
+
+on:
+  push:
+    branches: [main]
+    tags: ["**"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: firmware-ci-siwx917-soc-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  # The job id is the build's profile in SiliconFlow and in gates.yml.
+  siwx917-soc:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      packages: read # pull the private SDK image from ghcr
+      id-token: write # OIDC token that authenticates the run report
+    container:
+      # TODO: pin to the private SiWx917 SDK image's digest:
+      # ghcr.io/<owner>/<image>@sha256:<64 hex>.
+      image: ghcr.io/OWNER/sfci-siwx917@sha256:TODO_SIWX917_IMAGE_DIGEST
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+    env:
+      SFCI_OUT_DIR: out
+      SFCI_ARTIFACT_NAME: sfci-out-siwx917-soc-attempt-${{ github.run_attempt }}
+      SFCI_REQUIRED_STAGES: generate,compile,package
+      SFCI_VERSIONS_FILE: /opt/sfci/versions.json
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0 # full history and tags: `git describe` is the boot line's version
+          persist-credentials: false
+
+      - name: generate
+        run: ci/stage.sh generate -- ci/siwx917.sh generate
+
+      - name: compile
+        run: ci/stage.sh compile -- ci/siwx917.sh compile
+
+      - name: package
+        run: ci/stage.sh package -- ci/siwx917.sh package
+
+      - name: Build run report
+        if: always()
+        run: |
+          python3 ci/report.py --out "$SFCI_OUT_DIR" \
+            --required "$SFCI_REQUIRED_STAGES" --artifact-name "$SFCI_ARTIFACT_NAME" \
+            --versions "$SFCI_VERSIONS_FILE"
+
+      - name: Upload out/
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: ${{ env.SFCI_ARTIFACT_NAME }}
+          # The generated project is rebuilt from the .slcp on every run.
+          path: |
+            out/
+            !out/gen/
+          if-no-files-found: warn
+          retention-days: 14
+
+      # Must stay the last step: the backend downloads the artifact uploaded above.
+      - name: Post run report
+        if: always()
+        env:
+          SFCI_API_URL: ${{ vars.SFCI_API_URL }}
+        run: ci/post_report.sh "$SFCI_OUT_DIR/report.json"

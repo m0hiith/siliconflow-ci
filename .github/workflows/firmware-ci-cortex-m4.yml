@@ -1,0 +1,86 @@
+name: Firmware CI (cortex-m4)
+
+# A second build profile: firmware/ cross-compiled for a generic Cortex-M4F
+# (cmake/arm-none-eabi.cmake). It proves the code compiles and links for the
+# target and measures its size; it does not run tests or target real silicon.
+#
+# This is a separate workflow, not a job in firmware-ci.yml, because
+# SiliconFlow tracks one build per workflow run attempt with one run report.
+# The backend lists both workflows and their required stages
+# (SFCI_GITHUB_EXTRA_WORKFLOWS); keep them in step with the steps below.
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: firmware-ci-cortex-m4-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  # The job id is the build's profile in SiliconFlow and in gates.yml.
+  cortex-m4:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      packages: read # pull the toolchain image if the ghcr package is private
+      id-token: write # OIDC token that authenticates the run report
+    container:
+      # TODO(P0.2): pin to the real toolchain image digest (see firmware-ci.yml).
+      image: ghcr.io/OWNER/sfci-toolchain@sha256:TODO_TOOLCHAIN_IMAGE_DIGEST
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+    env:
+      SFCI_OUT_DIR: out
+      SFCI_ARTIFACT_NAME: sfci-out-cortex-m4-attempt-${{ github.run_attempt }}
+      SFCI_REQUIRED_STAGES: configure,compile,package,size
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0 # full history and tags for `git describe`
+          persist-credentials: false
+
+      - name: configure
+        run: |
+          ci/stage.sh configure -- cmake -S firmware -B build -G Ninja \
+            --toolchain "$PWD/firmware/cmake/arm-none-eabi.cmake" \
+            -DCMAKE_BUILD_TYPE=MinSizeRel -DSFCI_BUILD_TESTS=OFF
+
+      - name: compile
+        run: ci/stage.sh compile -- cmake --build build
+
+      - name: package
+        env:
+          OBJCOPY: arm-none-eabi-objcopy
+        run: ci/stage.sh package -- ci/package.sh build/firmware.elf build/firmware.map
+
+      - name: size
+        run: ci/stage.sh size -- python3 ci/size.py --size-tool arm-none-eabi-size build/firmware.elf
+
+      - name: Build run report
+        if: always()
+        run: |
+          python3 ci/report.py --out "$SFCI_OUT_DIR" \
+            --required "$SFCI_REQUIRED_STAGES" --artifact-name "$SFCI_ARTIFACT_NAME"
+
+      - name: Upload out/
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: ${{ env.SFCI_ARTIFACT_NAME }}
+          path: out/
+          if-no-files-found: warn
+          retention-days: 14
+
+      # Must stay the last step: the backend downloads the artifact uploaded above.
+      - name: Post run report
+        if: always()
+        env:
+          SFCI_API_URL: ${{ vars.SFCI_API_URL }}
+        run: ci/post_report.sh "$SFCI_OUT_DIR/report.json"

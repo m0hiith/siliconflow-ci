@@ -1,0 +1,11 @@
+Open On-Chip Debugger 0.12.0
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+swd
+cortex_m reset_config sysresetreq
+
+Error: No J-Link device found
+** OpenOCD init failed **
+shutdown command invoked
+

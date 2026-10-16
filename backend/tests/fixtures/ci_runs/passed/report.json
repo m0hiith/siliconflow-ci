@@ -1,0 +1,103 @@
+{
+  "schema": "sfci.run-report/1",
+  "generated_at": "2026-10-15T06:40:03Z",
+  "github": {
+    "repository": "acme/fw",
+    "run_id": 30433700,
+    "run_attempt": 1,
+    "sha": "3c9fc2af798c6d5725210693151df0d61346eb06",
+    "ref": "refs/heads/main",
+    "job": "host-cmake",
+    "workflow_ref": "acme/fw/.github/workflows/firmware-ci.yml@refs/heads/main"
+  },
+  "stages": [
+    {
+      "name": "configure",
+      "status": "passed",
+      "exit_code": 0,
+      "started_at": "2026-10-15T06:39:55Z",
+      "finished_at": "2026-10-15T06:39:59Z",
+      "required": true
+    },
+    {
+      "name": "compile",
+      "status": "passed",
+      "exit_code": 0,
+      "started_at": "2026-10-15T06:39:59Z",
+      "finished_at": "2026-10-15T06:39:59Z",
+      "required": true
+    },
+    {
+      "name": "test",
+      "status": "passed",
+      "exit_code": 0,
+      "started_at": "2026-10-15T06:39:59Z",
+      "finished_at": "2026-10-15T06:39:59Z",
+      "required": true
+    },
+    {
+      "name": "analyze",
+      "status": "passed",
+      "exit_code": 0,
+      "started_at": "2026-10-15T06:39:59Z",
+      "finished_at": "2026-10-15T06:39:59Z",
+      "required": true
+    },
+    {
+      "name": "package",
+      "status": "passed",
+      "exit_code": 0,
+      "started_at": "2026-10-15T06:39:59Z",
+      "finished_at": "2026-10-15T06:39:59Z",
+      "required": true
+    },
+    {
+      "name": "coverage",
+      "status": "passed",
+      "exit_code": 0,
+      "started_at": "2026-10-15T06:39:59Z",
+      "finished_at": "2026-10-15T06:40:03Z",
+      "required": false
+    }
+  ],
+  "toolchain": {
+    "gcc": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "cmake": "cmake version 3.28.3"
+  },
+  "coverage": {
+    "line_percent": 100.0,
+    "lines_covered": 55,
+    "lines_valid": 55
+  },
+  "cppcheck": {
+    "error": 0,
+    "warning": 0,
+    "style": 0,
+    "performance": 0,
+    "portability": 0,
+    "information": 0
+  },
+  "junit": [
+    {
+      "path": "junit/ctest.xml",
+      "size": 2985,
+      "sha256": "4086ab6919a2e46b14c3d82df44d85cbf968686402b10c8b49da5ceebbe8d508"
+    }
+  ],
+  "artifact_name": "sfci-out-host-cmake-attempt-1",
+  "manifest": {
+    "schema": "sfci.artifact-manifest/1",
+    "files": [
+      {
+        "file": "firmware",
+        "size": 96976,
+        "sha256": "6e8271fa925aae0262d2b6aa3d9496189b83e411455ea9955a05f8ff0ebda0f4"
+      },
+      {
+        "file": "firmware.bin",
+        "size": 145832,
+        "sha256": "ecc2cb082edfc6affe24a3f31577f7dc653002845d091c8aa1706245d1c065f6"
+      }
+    ]
+  }
+}

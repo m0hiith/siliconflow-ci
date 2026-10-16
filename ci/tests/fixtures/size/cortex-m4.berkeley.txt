@@ -1,0 +1,2 @@
+   text	   data	    bss	    dec	    hex	filename
+   8448	    100	   8564	  17112	   42d8	firmware.elf

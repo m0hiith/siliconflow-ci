@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="(empty)"
+	tests="3"
+	failures="1"
+	disabled="0"
+	skipped="0"
+	hostname=""
+	time="0"
+	timestamp="2026-10-15T06:40:07"
+	>
+	<testcase name="test_debounce" classname="test_debounce" time="0.00465261" status="run">
+		<properties/>
+		<system-out>/__w/fw/fw/firmware/tests/test_debounce.c:125:test_initial_level_emits_nothing:PASS
+/__w/fw/fw/firmware/tests/test_debounce.c:126:test_event_fires_exactly_at_stable_time:PASS
+/__w/fw/fw/firmware/tests/test_debounce.c:127:test_event_fires_only_once:PASS
+/__w/fw/fw/firmware/tests/test_debounce.c:128:test_release_after_stable_time:PASS
+/__w/fw/fw/firmware/tests/test_debounce.c:129:test_bounce_shorter_than_stable_time_is_ignored:PASS
+/__w/fw/fw/firmware/tests/test_debounce.c:130:test_bouncy_press_yields_single_event:PASS
+/__w/fw/fw/firmware/tests/test_debounce.c:131:test_bounce_restarts_timer:PASS
+/__w/fw/fw/firmware/tests/test_debounce.c:132:test_counter_wraparound:PASS
+/__w/fw/fw/firmware/tests/test_debounce.c:133:test_zero_stable_time_accepts_immediately:PASS
+
+-----------------------
+9 Tests 0 Failures 0 Ignored 
+OK
+</system-out>
+	</testcase>
+	<testcase name="test_moving_average" classname="test_moving_average" time="0.00403326" status="run">
+		<properties/>
+		<system-out>/__w/fw/fw/firmware/tests/test_moving_average.c:95:test_init_rejects_invalid_window:PASS
+/__w/fw/fw/firmware/tests/test_moving_average.c:96:test_warmup_averages_samples_seen_so_far:PASS
+/__w/fw/fw/firmware/tests/test_moving_average.c:97:test_window_slides_after_warmup:PASS
+/__w/fw/fw/firmware/tests/test_moving_average.c:98:test_constant_input_is_unchanged:PASS
+/__w/fw/fw/firmware/tests/test_moving_average.c:99:test_window_of_one_is_passthrough:PASS
+/__w/fw/fw/firmware/tests/test_moving_average.c:100:test_division_truncates_toward_zero:PASS
+/__w/fw/fw/firmware/tests/test_moving_average.c:101:test_extreme_values_do_not_overflow:PASS
+/__w/fw/fw/firmware/tests/test_moving_average.c:102:test_reinit_clears_history:PASS
+
+-----------------------
+8 Tests 0 Failures 0 Ignored 
+OK
+</system-out>
+	</testcase>
+	<testcase name="test_threshold" classname="test_threshold" time="0.00382373" status="fail">
+		<failure message="Failed"/>
+		<properties/>
+		<system-out>/__w/fw/fw/firmware/tests/test_threshold.c:91:test_init_rejects_inverted_or_equal_thresholds:PASS
+/__w/fw/fw/firmware/tests/test_threshold.c:92:test_starts_low:PASS
+/__w/fw/fw/firmware/tests/test_threshold.c:93:test_rising_exactly_at_high:PASS
+/__w/fw/fw/firmware/tests/test_threshold.c:94:test_falling_exactly_at_low:PASS
+/__w/fw/fw/firmware/tests/test_threshold.c:95:test_no_chatter_inside_band_while_low:PASS
+/__w/fw/fw/firmware/tests/test_threshold.c:96:test_no_chatter_inside_band_while_high:PASS
+/__w/fw/fw/firmware/tests/test_threshold.c:75:test_noisy_signal_around_one_threshold:FAIL: Expected 2 Was 1
+/__w/fw/fw/firmware/tests/test_threshold.c:98:test_full_cycle_events_alternate:PASS
+
+-----------------------
+8 Tests 1 Failures 0 Ignored 
+FAIL
+</system-out>
+	</testcase>
+</testsuite>

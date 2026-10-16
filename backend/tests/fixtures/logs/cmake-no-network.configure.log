@@ -1,0 +1,33 @@
+-- The C compiler identification is GNU 13.3.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+[1/9] Creating directories for 'unity-populate'
+[1/9] Performing download step (git clone) for 'unity-populate'
+Cloning into 'unity-src'...
+fatal: unable to access 'https://github.com/ThrowTheSwitch/Unity.git/': Could not resolve host: github.com
+Cloning into 'unity-src'...
+fatal: unable to access 'https://github.com/ThrowTheSwitch/Unity.git/': Could not resolve host: github.com
+Cloning into 'unity-src'...
+fatal: unable to access 'https://github.com/ThrowTheSwitch/Unity.git/': Could not resolve host: github.com
+-- Had to git clone more than once: 3 times.
+CMake Error at unity-subbuild/unity-populate-prefix/tmp/unity-populate-gitclone.cmake:39 (message):
+  Failed to clone repository: 'https://github.com/ThrowTheSwitch/Unity.git'
+
+
+FAILED: unity-populate-prefix/src/unity-populate-stamp/unity-populate-download /w/build/_deps/unity-subbuild/unity-populate-prefix/src/unity-populate-stamp/unity-populate-download 
+cd /w/build/_deps && /usr/bin/cmake -P /w/build/_deps/unity-subbuild/unity-populate-prefix/tmp/unity-populate-gitclone.cmake && /usr/bin/cmake -E touch /w/build/_deps/unity-subbuild/unity-populate-prefix/src/unity-populate-stamp/unity-populate-download
+ninja: build stopped: subcommand failed.
+
+CMake Error at /usr/share/cmake-3.28/Modules/FetchContent.cmake:1679 (message):
+  Build step for unity failed: 1
+Call Stack (most recent call first):
+  /usr/share/cmake-3.28/Modules/FetchContent.cmake:1819:EVAL:2 (__FetchContent_directPopulate)
+  /usr/share/cmake-3.28/Modules/FetchContent.cmake:1819 (cmake_language)
+  /usr/share/cmake-3.28/Modules/FetchContent.cmake:2033 (FetchContent_Populate)
+  tests/CMakeLists.txt:8 (FetchContent_MakeAvailable)
+
+
+-- Configuring incomplete, errors occurred!

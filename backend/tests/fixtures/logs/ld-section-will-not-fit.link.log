@@ -1,0 +1,2 @@
+/opt/homebrew/opt/arm-none-eabi-binutils/bin/arm-none-eabi-ld: big_flash.elf section `.text' will not fit in region `FLASH'
+collect2: error: ld returned 1 exit status

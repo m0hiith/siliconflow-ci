@@ -1,0 +1,450 @@
+{
+  "build_id": "bld_01M4ZJHDD6PXMZFX0BED1EP50G",
+  "responses": {
+    "/api/v1/builds/bld_01M4ZJHDD6PXMZFX0BED1EP50G": {
+      "artifacts_state": "stored",
+      "author_login": "m0hiith",
+      "branch": "main",
+      "commit_message": "Add hysteresis to threshold detector",
+      "commit_sha": "3c9fc2af798c6d5725210693151df0d61346eb06",
+      "commit_url": "https://github.com/acme/fw/commit/3c9fc2af798c6d5725210693151df0d61346eb06",
+      "created_at": "2026-10-15T10:43:14.957273Z",
+      "failure_class": null,
+      "finished_at": "2026-10-15T06:40:09Z",
+      "gh_run_attempt": 1,
+      "gh_run_id": 30433700,
+      "id": "bld_01M4ZJHDD6PXMZFX0BED1EP50G",
+      "number": 1,
+      "pr_number": null,
+      "profile": "host-cmake",
+      "project_id": "prj_01M4ZJHDB396ZG8QDQ8QWTT5SF",
+      "queued_at": "2026-10-15T06:39:43Z",
+      "ref": "refs/heads/main",
+      "repository": "acme/fw",
+      "repository_id": "rep_01M4ZJHDB5X6F43E9789785HRZ",
+      "run_url": "https://github.com/acme/fw/actions/runs/30433700/attempts/1",
+      "sdk": {},
+      "started_at": "2026-10-15T06:39:52Z",
+      "status": "passed",
+      "status_reason": "workflow run succeeded and every required stage passed",
+      "toolchain": {
+        "cmake": "cmake version 3.28.3",
+        "gcc": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
+      },
+      "trigger": "push"
+    },
+    "/api/v1/builds/bld_01M4ZJHDD6PXMZFX0BED1EP50G/artifacts": [
+      {
+        "created_at": "2026-10-15T10:43:15.057138Z",
+        "file_name": "firmware.bin",
+        "id": "art_01M4ZJHDHJDHWCPCY6DR8EYFSK",
+        "kind": "bin",
+        "release_eligible": true,
+        "sha256": "ecc2cb082edfc6affe24a3f31577f7dc653002845d091c8aa1706245d1c065f6",
+        "size_bytes": 145832
+      },
+      {
+        "created_at": "2026-10-15T10:43:15.057138Z",
+        "file_name": "firmware",
+        "id": "art_01M4ZJHDHH87ENDQ357GV2Z1MK",
+        "kind": "elf",
+        "release_eligible": true,
+        "sha256": "6e8271fa925aae0262d2b6aa3d9496189b83e411455ea9955a05f8ff0ebda0f4",
+        "size_bytes": 96976
+      }
+    ],
+    "/api/v1/builds/bld_01M4ZJHDD6PXMZFX0BED1EP50G/gates": [
+      {
+        "evaluated_at": "2026-10-15T10:43:15.185384Z",
+        "message": "2 artifact(s) verified and stored",
+        "observed": {
+          "count": 2,
+          "state": "stored"
+        },
+        "passed": true,
+        "rule_id": "artifacts_verified",
+        "threshold": {
+          "count_min": 1,
+          "state": "stored"
+        }
+      },
+      {
+        "evaluated_at": "2026-10-15T10:43:15.185384Z",
+        "message": "stage configure passed",
+        "observed": "passed",
+        "passed": true,
+        "rule_id": "stage:configure",
+        "threshold": "passed"
+      },
+      {
+        "evaluated_at": "2026-10-15T10:43:15.185384Z",
+        "message": "stage compile passed",
+        "observed": "passed",
+        "passed": true,
+        "rule_id": "stage:compile",
+        "threshold": "passed"
+      },
+      {
+        "evaluated_at": "2026-10-15T10:43:15.185384Z",
+        "message": "stage test passed",
+        "observed": "passed",
+        "passed": true,
+        "rule_id": "stage:test",
+        "threshold": "passed"
+      },
+      {
+        "evaluated_at": "2026-10-15T10:43:15.185384Z",
+        "message": "stage analyze passed",
+        "observed": "passed",
+        "passed": true,
+        "rule_id": "stage:analyze",
+        "threshold": "passed"
+      },
+      {
+        "evaluated_at": "2026-10-15T10:43:15.185384Z",
+        "message": "stage package passed",
+        "observed": "passed",
+        "passed": true,
+        "rule_id": "stage:package",
+        "threshold": "passed"
+      },
+      {
+        "evaluated_at": "2026-10-15T10:43:15.185384Z",
+        "message": "0 failing test(s), at most 0 allowed",
+        "observed": 0,
+        "passed": true,
+        "rule_id": "test_failures",
+        "threshold": 0
+      },
+      {
+        "evaluated_at": "2026-10-15T10:43:15.185384Z",
+        "message": "line coverage 100.0% meets the 80.0% minimum",
+        "observed": 100.0,
+        "passed": true,
+        "rule_id": "line_coverage_min",
+        "threshold": 80.0
+      },
+      {
+        "evaluated_at": "2026-10-15T10:43:15.185384Z",
+        "message": "0 analysis error(s), at most 0 allowed",
+        "observed": 0,
+        "passed": true,
+        "rule_id": "analysis_errors_max",
+        "threshold": 0
+      },
+      {
+        "evaluated_at": "2026-10-15T10:43:15.185384Z",
+        "message": "firmware: 30063 text bytes, within the 40960-byte limit",
+        "observed": 30063,
+        "passed": true,
+        "rule_id": "text_bytes_max",
+        "threshold": 40960
+      },
+      {
+        "evaluated_at": "2026-10-15T10:43:15.185384Z",
+        "message": "refs/heads/main is a release ref",
+        "observed": "refs/heads/main",
+        "passed": true,
+        "rule_id": "release_ref",
+        "threshold": [
+          "refs/heads/main",
+          "refs/tags/v*"
+        ]
+      }
+    ],
+    "/api/v1/builds/bld_01M4ZJHDD6PXMZFX0BED1EP50G/logs/analyze": {
+      "error_count": 0,
+      "errors": [],
+      "failure_class": null,
+      "first_error": null,
+      "lines": [
+        "Cppcheck 2.13.0",
+        "Checking firmware/src/hal_fake.c ...",
+        "1/3 files checked 25% done",
+        "Checking firmware/src/main.c ...",
+        "Checking firmware/src/main.c: SFCI_HOST_RUN_MS...",
+        "2/3 files checked 54% done",
+        "Checking firmware/src/sensor_logic.c ...",
+        "3/3 files checked 100% done",
+        "cppcheck: error=0, warning=0, style=0, performance=0, portability=0, information=0"
+      ],
+      "offset": 0,
+      "stage": "analyze",
+      "total_lines": 9,
+      "warning_count": 0,
+      "warnings": []
+    },
+    "/api/v1/builds/bld_01M4ZJHDD6PXMZFX0BED1EP50G/logs/compile": {
+      "error_count": 0,
+      "errors": [],
+      "failure_class": null,
+      "first_error": null,
+      "lines": [
+        "[1/15] Generating version.h from git describe",
+        "[2/15] Building C object CMakeFiles/hal_fake.dir/src/hal_fake.c.o",
+        "[3/15] Building C object tests/CMakeFiles/test_moving_average.dir/test_moving_average.c.o",
+        "[4/15] Building C object CMakeFiles/sensor_logic.dir/src/sensor_logic.c.o",
+        "[5/15] Building C object tests/CMakeFiles/test_debounce.dir/test_debounce.c.o",
+        "[6/15] Linking C static library libhal_fake.a",
+        "[7/15] Building C object tests/CMakeFiles/test_threshold.dir/test_threshold.c.o",
+        "[8/15] Linking C static library libsensor_logic.a",
+        "[9/15] Building C object CMakeFiles/firmware.dir/src/main.c.o",
+        "[10/15] Linking C executable firmware",
+        "[11/15] Building C object _deps/unity-build/CMakeFiles/unity.dir/src/unity.c.o",
+        "[12/15] Linking C static library _deps/unity-build/libunity.a",
+        "[13/15] Linking C executable tests/test_debounce",
+        "[14/15] Linking C executable tests/test_threshold",
+        "[15/15] Linking C executable tests/test_moving_average"
+      ],
+      "offset": 0,
+      "stage": "compile",
+      "total_lines": 15,
+      "warning_count": 0,
+      "warnings": []
+    },
+    "/api/v1/builds/bld_01M4ZJHDD6PXMZFX0BED1EP50G/logs/compile/search?q=linking": {
+      "matches": [
+        6,
+        8,
+        10,
+        12,
+        13,
+        14,
+        15
+      ],
+      "query": "linking",
+      "stage": "compile",
+      "total": 7
+    },
+    "/api/v1/builds/bld_01M4ZJHDD6PXMZFX0BED1EP50G/logs/configure": {
+      "error_count": 0,
+      "errors": [],
+      "failure_class": null,
+      "first_error": null,
+      "lines": [
+        "-- The C compiler identification is GNU 13.3.0",
+        "-- Detecting C compiler ABI info",
+        "-- Detecting C compiler ABI info - done",
+        "-- Check for working C compiler: /usr/bin/cc - skipped",
+        "-- Detecting C compile features",
+        "-- Detecting C compile features - done",
+        "-- coverage target: configure with -DSFCI_COVERAGE=ON for meaningful results",
+        "-- Configuring done (4.0s)",
+        "-- Generating done (0.0s)",
+        "-- Build files have been written to: /__w/fw/fw/build"
+      ],
+      "offset": 0,
+      "stage": "configure",
+      "total_lines": 10,
+      "warning_count": 0,
+      "warnings": []
+    },
+    "/api/v1/builds/bld_01M4ZJHDD6PXMZFX0BED1EP50G/logs/coverage": {
+      "error_count": 0,
+      "errors": [],
+      "failure_class": null,
+      "first_error": null,
+      "lines": [
+        "-- The C compiler identification is GNU 13.3.0",
+        "-- Detecting C compiler ABI info",
+        "-- Detecting C compiler ABI info - done",
+        "-- Check for working C compiler: /usr/bin/cc - skipped",
+        "-- Detecting C compile features",
+        "-- Detecting C compile features - done",
+        "-- Configuring done (3.6s)",
+        "-- Generating done (0.0s)",
+        "-- Build files have been written to: /__w/fw/fw/build-cov",
+        "[1/15] Generating version.h from git describe",
+        "[2/15] Building C object CMakeFiles/sensor_logic.dir/src/sensor_logic.c.o",
+        "[3/15] Building C object CMakeFiles/hal_fake.dir/src/hal_fake.c.o",
+        "[4/15] Linking C static library libsensor_logic.a",
+        "[5/15] Linking C static library libhal_fake.a",
+        "[6/15] Building C object tests/CMakeFiles/test_moving_average.dir/test_moving_average.c.o",
+        "[7/15] Building C object tests/CMakeFiles/test_debounce.dir/test_debounce.c.o",
+        "[8/15] Building C object CMakeFiles/firmware.dir/src/main.c.o",
+        "[9/15] Building C object tests/CMakeFiles/test_threshold.dir/test_threshold.c.o",
+        "[10/15] Linking C executable firmware",
+        "[11/15] Building C object _deps/unity-build/CMakeFiles/unity.dir/src/unity.c.o",
+        "[12/15] Linking C static library _deps/unity-build/libunity.a",
+        "[13/15] Linking C executable tests/test_moving_average",
+        "[14/15] Linking C executable tests/test_debounce",
+        "[15/15] Linking C executable tests/test_threshold",
+        "[1/1] Running tests and writing Cobertura coverage to coverage.xml",
+        "Test project /__w/fw/fw/build-cov",
+        "    Start 1: test_debounce",
+        "1/3 Test #1: test_debounce ....................   Passed    0.00 sec",
+        "    Start 2: test_moving_average",
+        "2/3 Test #2: test_moving_average ..............   Passed    0.00 sec",
+        "    Start 3: test_threshold",
+        "3/3 Test #3: test_threshold ...................   Passed    0.00 sec",
+        "",
+        "100% tests passed, 0 tests failed out of 3",
+        "",
+        "Total Test time (real) =   0.00 sec",
+        "(INFO) Reading coverage data...",
+        "",
+        "(INFO) Writing coverage report...",
+        "",
+        "lines: 100.0% (55 out of 55)",
+        "functions: 100.0% (9 out of 9)",
+        "branches: 100.0% (26 out of 26)"
+      ],
+      "offset": 0,
+      "stage": "coverage",
+      "total_lines": 43,
+      "warning_count": 0,
+      "warnings": []
+    },
+    "/api/v1/builds/bld_01M4ZJHDD6PXMZFX0BED1EP50G/logs/package": {
+      "error_count": 0,
+      "errors": [],
+      "failure_class": null,
+      "first_error": null,
+      "lines": [
+        "packaged firmware",
+        "packaged firmware.bin",
+        "6e8271fa925aae0262d2b6aa3d9496189b83e411455ea9955a05f8ff0ebda0f4  firmware  (96976 bytes)",
+        "ecc2cb082edfc6affe24a3f31577f7dc653002845d091c8aa1706245d1c065f6  firmware.bin  (145832 bytes)"
+      ],
+      "offset": 0,
+      "stage": "package",
+      "total_lines": 4,
+      "warning_count": 0,
+      "warnings": []
+    },
+    "/api/v1/builds/bld_01M4ZJHDD6PXMZFX0BED1EP50G/logs/test": {
+      "error_count": 0,
+      "errors": [],
+      "failure_class": null,
+      "first_error": null,
+      "lines": [
+        "Internal ctest changing into directory: /__w/fw/fw/build",
+        "Test project /__w/fw/fw/build",
+        "    Start 1: test_debounce",
+        "1/3 Test #1: test_debounce ....................   Passed    0.02 sec",
+        "    Start 2: test_moving_average",
+        "2/3 Test #2: test_moving_average ..............   Passed    0.00 sec",
+        "    Start 3: test_threshold",
+        "3/3 Test #3: test_threshold ...................   Passed    0.00 sec",
+        "",
+        "100% tests passed, 0 tests failed out of 3",
+        "",
+        "Total Test time (real) =   0.03 sec"
+      ],
+      "offset": 0,
+      "stage": "test",
+      "total_lines": 12,
+      "warning_count": 0,
+      "warnings": []
+    },
+    "/api/v1/builds/bld_01M4ZJHDD6PXMZFX0BED1EP50G/previous-passing": {
+      "build": null,
+      "commits_between": null,
+      "compare_url": null
+    },
+    "/api/v1/builds/bld_01M4ZJHDD6PXMZFX0BED1EP50G/size": {
+      "base_branch": "main",
+      "base_build": null,
+      "base_size": null,
+      "size": null
+    },
+    "/api/v1/builds/bld_01M4ZJHDD6PXMZFX0BED1EP50G/stages": [
+      {
+        "exit_code": 0,
+        "finished_at": "2026-10-15T06:39:59Z",
+        "name": "configure",
+        "position": 0,
+        "required": true,
+        "started_at": "2026-10-15T06:39:55Z",
+        "status": "passed"
+      },
+      {
+        "exit_code": 0,
+        "finished_at": "2026-10-15T06:39:59Z",
+        "name": "compile",
+        "position": 1,
+        "required": true,
+        "started_at": "2026-10-15T06:39:59Z",
+        "status": "passed"
+      },
+      {
+        "exit_code": 0,
+        "finished_at": "2026-10-15T06:39:59Z",
+        "name": "test",
+        "position": 2,
+        "required": true,
+        "started_at": "2026-10-15T06:39:59Z",
+        "status": "passed"
+      },
+      {
+        "exit_code": 0,
+        "finished_at": "2026-10-15T06:39:59Z",
+        "name": "analyze",
+        "position": 3,
+        "required": true,
+        "started_at": "2026-10-15T06:39:59Z",
+        "status": "passed"
+      },
+      {
+        "exit_code": 0,
+        "finished_at": "2026-10-15T06:39:59Z",
+        "name": "package",
+        "position": 4,
+        "required": true,
+        "started_at": "2026-10-15T06:39:59Z",
+        "status": "passed"
+      },
+      {
+        "exit_code": 0,
+        "finished_at": "2026-10-15T06:40:03Z",
+        "name": "coverage",
+        "position": 5,
+        "required": false,
+        "started_at": "2026-10-15T06:39:59Z",
+        "status": "passed"
+      }
+    ],
+    "/api/v1/builds/bld_01M4ZJHDD6PXMZFX0BED1EP50G/tests": [
+      {
+        "classname": "test_debounce",
+        "duration_ms": 16,
+        "message": null,
+        "name": "test_debounce",
+        "outcome": "passed",
+        "suite": "(empty)"
+      },
+      {
+        "classname": "test_moving_average",
+        "duration_ms": 5,
+        "message": null,
+        "name": "test_moving_average",
+        "outcome": "passed",
+        "suite": "(empty)"
+      },
+      {
+        "classname": "test_threshold",
+        "duration_ms": 4,
+        "message": null,
+        "name": "test_threshold",
+        "outcome": "passed",
+        "suite": "(empty)"
+      }
+    ],
+    "/api/v1/projects": [
+      {
+        "created_at": "2026-10-15T10:43:14.915548Z",
+        "default_branch": "main",
+        "id": "prj_01M4ZJHDB396ZG8QDQ8QWTT5SF",
+        "name": "Fw",
+        "repositories": [
+          {
+            "default_branch": "main",
+            "full_name": "acme/fw",
+            "id": "rep_01M4ZJHDB5X6F43E9789785HRZ"
+          }
+        ],
+        "slug": "fw"
+      }
+    ]
+  }
+}

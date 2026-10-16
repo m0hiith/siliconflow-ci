@@ -1,0 +1,5 @@
+{"name":"configure","status":"passed","exit_code":0,"started_at":"2026-10-14T09:01:00Z","finished_at":"2026-10-14T09:01:04Z"}
+{"name":"compile","status":"passed","exit_code":0,"started_at":"2026-10-14T09:01:04Z","finished_at":"2026-10-14T09:01:20Z"}
+{"name":"test","status":"passed","exit_code":0,"started_at":"2026-10-14T09:01:20Z","finished_at":"2026-10-14T09:01:23Z"}
+{"name":"analyze","status":"passed","exit_code":0,"started_at":"2026-10-14T09:01:23Z","finished_at":"2026-10-14T09:01:31Z"}
+{"name":"package","status":"passed","exit_code":0,"started_at":"2026-10-14T09:01:31Z","finished_at":"2026-10-14T09:01:32Z"}

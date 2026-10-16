@@ -1,0 +1,111 @@
+name: Hardware in the loop (siwx917-soc)
+
+# Flashes a passed siwx917-soc build onto a real BRD4338A and checks that it
+# boots: the board must print exactly one
+#   SFCI-BOOT version=<FW_VERSION> sha=<FW_COMMIT_SHORT>
+# line, with the build's commit. See docs/hil.md.
+#
+# It runs after "Firmware CI (siwx917-soc)", the workflow that builds and
+# packages the siwx917-soc images, completes, and only for its successful
+# push runs on main or v* tags. There is no pull_request trigger, and
+# workflow_run never runs it for a pull request: the self-hosted runner and
+# its board must never run code from a fork. workflow_run always runs this
+# file and the ci/ scripts as they are on the default branch, never as they
+# are at the commit under test.
+#
+# The image comes from SiliconFlow, not from the GitHub artifact, and its
+# SHA-256 is checked against the hash the server computed before it is
+# flashed. The run report links to the original build (profile
+# siwx917-hil); SiliconFlow adds a "hil" stage to that build.
+#
+# Runner setup: labels self-hosted + siwx917, python3 >= 3.11, Simplicity
+# Commander, and SFCI_HIL_DEVICE and SFCI_HIL_SERIAL_PORT in the runner's
+# environment (its .env file). Fill the Commander TODO in ci/hil/flash.sh.
+
+on:
+  workflow_run:
+    workflows: ["Firmware CI (siwx917-soc)"]
+    types: [completed]
+
+permissions:
+  contents: read
+
+# One board: never two runs at once. GitHub keeps only the newest pending run.
+concurrency:
+  group: hil-siwx917
+  cancel-in-progress: false
+
+jobs:
+  # The job id is the run report's github.job; its profile is set explicitly.
+  siwx917-hil:
+    if: >-
+      github.event.workflow_run.conclusion == 'success'
+      && github.event.workflow_run.event == 'push'
+      && github.event.workflow_run.head_repository.full_name == github.repository
+      && (github.event.workflow_run.head_branch == 'main'
+          || startsWith(github.event.workflow_run.head_branch, 'v'))
+    runs-on: [self-hosted, siwx917]
+    environment: hardware
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      id-token: write # OIDC token that authenticates the run report
+    env:
+      SFCI_OUT_DIR: out
+      SFCI_ARTIFACT_NAME: sfci-out-siwx917-hil-attempt-${{ github.run_attempt }}
+      SFCI_REQUIRED_STAGES: fetch,flash,test
+      SFCI_API_URL: ${{ vars.SFCI_API_URL }}
+      SFCI_HIL_IMAGE_NAME: siwx917_soc.rps
+      FIRMWARE_RUN_ID: ${{ github.event.workflow_run.id }}
+      FIRMWARE_RUN_ATTEMPT: ${{ github.event.workflow_run.run_attempt }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      # fetch.py also checks (with SiliconFlow's own record) that the build
+      # passed, is siwx917-soc, and ran on main or a v* tag.
+      - name: fetch
+        run: |
+          rm -rf "$SFCI_OUT_DIR"  # a self-hosted workspace outlives the job
+          ci/stage.sh fetch -- python3 ci/hil/fetch.py \
+            --run-id "$FIRMWARE_RUN_ID" --run-attempt "$FIRMWARE_RUN_ATTEMPT" \
+            --file "$SFCI_HIL_IMAGE_NAME" --dest "$RUNNER_TEMP/sfci-hil"
+
+      # An infrastructure failure (exit 75: probe, port, verify) is retried once.
+      - name: flash
+        run: |
+          ci/stage.sh flash -- ci/hil/retry_infra.sh \
+            ci/hil/flash.sh flash "$RUNNER_TEMP/sfci-hil/$SFCI_HIL_IMAGE_NAME"
+
+      # Never retried.
+      - name: test
+        run: ci/stage.sh test -- python3 ci/hil/boot_check.py --build "$SFCI_OUT_DIR/hil/build.json"
+
+      - name: Build run report
+        id: report
+        if: always()
+        run: |
+          build_id=$(python3 -c 'import json, sys; print(json.load(open(sys.argv[1]))["build_id"])' \
+            "$SFCI_OUT_DIR/hil/build.json" 2>/dev/null) || build_id=
+          if [[ -z $build_id ]]; then
+            echo "::warning title=run report::no build to link to (fetch did not find one); nothing to report"
+            exit 0
+          fi
+          python3 ci/report.py --out "$SFCI_OUT_DIR" \
+            --required "$SFCI_REQUIRED_STAGES" --artifact-name "$SFCI_ARTIFACT_NAME" \
+            --profile siwx917-hil --build-id "$build_id"
+          echo "ready=true" >>"$GITHUB_OUTPUT"
+
+      - name: Upload out/
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: ${{ env.SFCI_ARTIFACT_NAME }}
+          path: out/
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Post run report
+        if: always() && steps.report.outputs.ready == 'true'
+        run: ci/post_report.sh "$SFCI_OUT_DIR/report.json"

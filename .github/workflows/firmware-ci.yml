@@ -1,0 +1,121 @@
+name: Firmware CI
+
+# SiliconFlow correlates manual builds by parsing "sfci <build_id>" from the run name.
+run-name: >-
+  ${{ inputs.build_id && format('sfci {0}', inputs.build_id)
+      || format('Firmware CI {0}', github.event.pull_request.head.sha || github.sha) }}
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      build_id:
+        description: "SiliconFlow build id (set by the backend for manual builds)"
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: firmware-ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+# Both jobs run in the toolchain image. container.image cannot read `env`, so the
+# digest is repeated per job; replace both TODOs (and the one in
+# firmware-ci-cortex-m4.yml) with the digest printed by the "Toolchain image"
+# workflow: ghcr.io/<owner>/sfci-toolchain@sha256:<64 hex>.
+
+jobs:
+  host-cmake:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      packages: read # pull the toolchain image if the ghcr package is private
+      id-token: write # OIDC token that authenticates the run report
+    container:
+      # TODO(P0.2): pin to the real toolchain image digest (see note above `jobs:`).
+      image: ghcr.io/OWNER/sfci-toolchain@sha256:TODO_TOOLCHAIN_IMAGE_DIGEST
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+    env:
+      SFCI_OUT_DIR: out
+      SFCI_ARTIFACT_NAME: sfci-out-host-cmake-attempt-${{ github.run_attempt }}
+      # A required stage that never ran is reported as skipped. The backend
+      # holds its own list (SFCI_REQUIRED_STAGES); a report cannot shorten it.
+      SFCI_REQUIRED_STAGES: configure,compile,test,analyze,package
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0 # full history and tags for `git describe`
+          persist-credentials: false
+
+      - name: configure
+        run: ci/stage.sh configure -- cmake -S firmware -B build -G Ninja -DSFCI_SANITIZE=ON
+
+      - name: compile
+        run: ci/stage.sh compile -- cmake --build build
+
+      - name: test
+        run: |
+          mkdir -p "$SFCI_OUT_DIR/junit"
+          ci/stage.sh test -- ctest --test-dir build --output-on-failure \
+            --output-junit "$PWD/$SFCI_OUT_DIR/junit/ctest.xml"
+
+      - name: analyze
+        run: ci/stage.sh analyze -- ci/analyze.sh build
+
+      - name: package
+        run: ci/stage.sh package -- ci/package.sh build/firmware
+
+      # Not a required stage: a failure here cannot skip the stages above, and
+      # the line_coverage_min gate fails closed when no coverage is reported.
+      # A separate, instrumented build keeps the packaged firmware unchanged.
+      - name: coverage
+        run: ci/stage.sh coverage -- ci/coverage.sh build-cov
+
+      - name: Build run report
+        if: always()
+        run: |
+          python3 ci/report.py --out "$SFCI_OUT_DIR" \
+            --required "$SFCI_REQUIRED_STAGES" --artifact-name "$SFCI_ARTIFACT_NAME"
+
+      - name: Upload out/
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: ${{ env.SFCI_ARTIFACT_NAME }}
+          path: out/
+          if-no-files-found: warn
+          retention-days: 14
+
+      # Must stay the last step: the backend downloads the artifact uploaded above.
+      - name: Post run report
+        if: always()
+        env:
+          SFCI_API_URL: ${{ vars.SFCI_API_URL }}
+        run: ci/post_report.sh "$SFCI_OUT_DIR/report.json"
+
+  ci-scripts:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      packages: read
+    container:
+      # TODO(P0.2): pin to the real toolchain image digest (see note above `jobs:`).
+      image: ghcr.io/OWNER/sfci-toolchain@sha256:TODO_TOOLCHAIN_IMAGE_DIGEST
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Test CI helper scripts
+        run: pytest -q ci/tests

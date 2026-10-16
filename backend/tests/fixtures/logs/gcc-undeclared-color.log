@@ -1,0 +1,5 @@
+[01m[Kfirmware/src/sensor_logic.c:[m[K In function '[01m[Ksl_mavg_ready[m[K':
+[01m[Kfirmware/src/sensor_logic.c:74:20:[m[K [01;31m[Kerror: [m[K'[01m[KSL_MAVG_LIMIT[m[K' undeclared (first use in this function)
+   74 |     if (f->count > [01;31m[KSL_MAVG_LIMIT[m[K) {
+      |                    [01;31m[K^~~~~~~~~~~~~[m[K
+[01m[Kfirmware/src/sensor_logic.c:74:20:[m[K [01;36m[Knote: [m[Keach undeclared identifier is reported only once for each function it appears in

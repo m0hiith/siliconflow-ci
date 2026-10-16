@@ -1,0 +1,3 @@
+/opt/homebrew/opt/arm-none-eabi-binutils/bin/arm-none-eabi-ld: big_ram.elf section `.bss' will not fit in region `RAM'
+/opt/homebrew/opt/arm-none-eabi-binutils/bin/arm-none-eabi-ld: region `RAM' overflowed by 3072 bytes
+collect2: error: ld returned 1 exit status

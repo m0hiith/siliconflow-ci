@@ -1,0 +1,15 @@
+{
+  "schema": "sfci.artifact-manifest/1",
+  "files": [
+    {
+      "file": "firmware",
+      "size": 96976,
+      "sha256": "6e8271fa925aae0262d2b6aa3d9496189b83e411455ea9955a05f8ff0ebda0f4"
+    },
+    {
+      "file": "firmware.bin",
+      "size": 145832,
+      "sha256": "ecc2cb082edfc6affe24a3f31577f7dc653002845d091c8aa1706245d1c065f6"
+    }
+  ]
+}

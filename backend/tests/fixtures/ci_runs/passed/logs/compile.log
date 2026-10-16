@@ -1,0 +1,15 @@
+[1/15] Generating version.h from git describe
+[2/15] Building C object CMakeFiles/hal_fake.dir/src/hal_fake.c.o
+[3/15] Building C object tests/CMakeFiles/test_moving_average.dir/test_moving_average.c.o
+[4/15] Building C object CMakeFiles/sensor_logic.dir/src/sensor_logic.c.o
+[5/15] Building C object tests/CMakeFiles/test_debounce.dir/test_debounce.c.o
+[6/15] Linking C static library libhal_fake.a
+[7/15] Building C object tests/CMakeFiles/test_threshold.dir/test_threshold.c.o
+[8/15] Linking C static library libsensor_logic.a
+[9/15] Building C object CMakeFiles/firmware.dir/src/main.c.o
+[10/15] Linking C executable firmware
+[11/15] Building C object _deps/unity-build/CMakeFiles/unity.dir/src/unity.c.o
+[12/15] Linking C static library _deps/unity-build/libunity.a
+[13/15] Linking C executable tests/test_debounce
+[14/15] Linking C executable tests/test_threshold
+[15/15] Linking C executable tests/test_moving_average

@@ -1,0 +1,8 @@
+/* Generated from `git describe --always --dirty` by cmake/gen_version.cmake (or ci/siwx917.sh for the slc build). Do not edit. */
+#ifndef VERSION_H
+#define VERSION_H
+
+#define FW_VERSION "@FW_VERSION@"
+#define FW_COMMIT_SHORT "@FW_COMMIT_SHORT@"
+
+#endif /* VERSION_H */

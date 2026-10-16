@@ -1,0 +1,39 @@
+# Release gates for this repository. SiliconFlow reads this file at the
+# commit each build ran on, and evaluates it after the build passes. A build's
+# artifacts are release-eligible only if every check passes and the build's
+# ref matches release_refs. See docs/release-gates.md.
+version: 1
+
+# Stages that must have passed. The backend's own required stages
+# (SFCI_REQUIRED_STAGES) already decide pass/fail; list any extra here.
+required_stages: [configure, compile, test, analyze, package]
+
+rules:
+  # Failed + errored JUnit test cases, from the server-verified JUnit files.
+  test_failures:
+    threshold: 0
+    requires_stage: test
+
+  # Line coverage (percent) reported by gcovr.
+  line_coverage_min:
+    threshold: 80
+    requires_stage: test
+
+  # cppcheck findings of severity "error".
+  analysis_errors_max:
+    threshold: 0
+    requires_stage: analyze
+
+  # Berkeley "text" size (as GNU size prints it) of the largest ELF artifact,
+  # computed on the server. The host-cmake build (with sanitizers) measured
+  # 30031 bytes when this limit was set.
+  text_bytes_max:
+    threshold: 40960
+    profile: host-cmake
+    requires_stage: package
+
+# Refs whose builds may be released. `*` stays within one path segment and
+# `**` crosses segments.
+release_refs:
+  - refs/heads/main
+  - refs/tags/v*

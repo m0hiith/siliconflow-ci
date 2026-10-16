@@ -2,3 +2,8 @@ build/
 out/
 .DS_Store
 .codex/
+.env
+__pycache__/
+*.pyc
+.pytest_cache/
+.cache/

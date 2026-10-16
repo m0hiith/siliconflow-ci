@@ -1,0 +1,17 @@
+[1/15] Generating version.h from git describe
+[2/15] Building C object CMakeFiles/hal_fake.dir/src/hal_fake.c.o
+[3/15] Building C object tests/CMakeFiles/test_threshold.dir/test_threshold.c.o
+[4/15] Building C object tests/CMakeFiles/test_debounce.dir/test_debounce.c.o
+[5/15] Building C object tests/CMakeFiles/test_moving_average.dir/test_moving_average.c.o
+[6/15] Linking C static library libhal_fake.a
+[7/15] Building C object CMakeFiles/sensor_logic.dir/src/sensor_logic.c.o
+[8/15] Building C object CMakeFiles/firmware.dir/src/main.c.o
+[9/15] Linking C static library libsensor_logic.a
+[10/15] Linking C executable firmware
+FAILED: firmware 
+: && /usr/bin/cc  -fsanitize=address,undefined -fno-sanitize-recover=undefined -fno-omit-frame-pointer CMakeFiles/firmware.dir/src/main.c.o -o firmware  libsensor_logic.a  libhal_fake.a && :
+/usr/bin/ld: CMakeFiles/firmware.dir/src/main.c.o: in function `main':
+main.c:(.text+0x108): undefined reference to `sl_calibrate'
+collect2: error: ld returned 1 exit status
+[11/15] Building C object _deps/unity-build/CMakeFiles/unity.dir/src/unity.c.o
+ninja: build stopped: subcommand failed.

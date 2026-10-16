@@ -1,0 +1,44 @@
+[1/15] Generating version.h from git describe
+[2/15] Building C object CMakeFiles/firmware.dir/src/main.c.o
+FAILED: CMakeFiles/firmware.dir/src/main.c.o 
+/usr/bin/cc -DSFCI_HOST_RUN_MS=2000u -I/w/build/generated/include -I/w/firmware/include -std=c11 -Wall -Wextra -Werror -fsanitize=address,undefined -fno-sanitize-recover=undefined -fno-omit-frame-pointer -MD -MT CMakeFiles/firmware.dir/src/main.c.o -MF CMakeFiles/firmware.dir/src/main.c.o.d -o CMakeFiles/firmware.dir/src/main.c.o -c /w/firmware/src/main.c
+/w/firmware/src/main.c:58:1: fatal error: error closing /tmp/ccsSVAMp.s: No space left on device
+   58 | }
+      | ^
+compilation terminated.
+[3/15] Building C object CMakeFiles/hal_fake.dir/src/hal_fake.c.o
+FAILED: CMakeFiles/hal_fake.dir/src/hal_fake.c.o 
+/usr/bin/cc  -I/w/firmware/include -std=c11 -Wall -Wextra -Werror -fsanitize=address,undefined -fno-sanitize-recover=undefined -fno-omit-frame-pointer -MD -MT CMakeFiles/hal_fake.dir/src/hal_fake.c.o -MF CMakeFiles/hal_fake.dir/src/hal_fake.c.o.d -o CMakeFiles/hal_fake.dir/src/hal_fake.c.o -c /w/firmware/src/hal_fake.c
+/w/firmware/src/hal_fake.c:54:1: fatal error: error writing to /tmp/ccsTTGeG.s: No space left on device
+   54 | }
+      | ^
+compilation terminated.
+[4/15] Building C object tests/CMakeFiles/test_moving_average.dir/test_moving_average.c.o
+FAILED: tests/CMakeFiles/test_moving_average.dir/test_moving_average.c.o 
+/usr/bin/cc  -I/w/firmware/include -I/w/build/_deps/unity-src/src -I/w/build/_deps/unity-build -std=c11 -Wall -Wextra -Werror -fsanitize=address,undefined -fno-sanitize-recover=undefined -fno-omit-frame-pointer -MD -MT tests/CMakeFiles/test_moving_average.dir/test_moving_average.c.o -MF tests/CMakeFiles/test_moving_average.dir/test_moving_average.c.o.d -o tests/CMakeFiles/test_moving_average.dir/test_moving_average.c.o -c /w/firmware/tests/test_moving_average.c
+/w/firmware/tests/test_moving_average.c:104:1: fatal error: error writing to /tmp/ccAzyV2h.s: No space left on device
+  104 | }
+      | ^
+compilation terminated.
+[5/15] Building C object tests/CMakeFiles/test_threshold.dir/test_threshold.c.o
+FAILED: tests/CMakeFiles/test_threshold.dir/test_threshold.c.o 
+/usr/bin/cc  -I/w/firmware/include -I/w/build/_deps/unity-src/src -I/w/build/_deps/unity-build -std=c11 -Wall -Wextra -Werror -fsanitize=address,undefined -fno-sanitize-recover=undefined -fno-omit-frame-pointer -MD -MT tests/CMakeFiles/test_threshold.dir/test_threshold.c.o -MF tests/CMakeFiles/test_threshold.dir/test_threshold.c.o.d -o tests/CMakeFiles/test_threshold.dir/test_threshold.c.o -c /w/firmware/tests/test_threshold.c
+/w/firmware/tests/test_threshold.c:100:1: fatal error: error writing to /tmp/cc4JiiXN.s: No space left on device
+  100 | }
+      | ^
+compilation terminated.
+[6/15] Building C object CMakeFiles/sensor_logic.dir/src/sensor_logic.c.o
+FAILED: CMakeFiles/sensor_logic.dir/src/sensor_logic.c.o 
+/usr/bin/cc  -I/w/firmware/include -std=c11 -Wall -Wextra -Werror -fsanitize=address,undefined -fno-sanitize-recover=undefined -fno-omit-frame-pointer -MD -MT CMakeFiles/sensor_logic.dir/src/sensor_logic.c.o -MF CMakeFiles/sensor_logic.dir/src/sensor_logic.c.o.d -o CMakeFiles/sensor_logic.dir/src/sensor_logic.c.o -c /w/firmware/src/sensor_logic.c
+/w/firmware/src/sensor_logic.c:106:1: fatal error: error writing to /tmp/cc4pxuiT.s: No space left on device
+  106 | }
+      | ^
+compilation terminated.
+[7/15] Building C object tests/CMakeFiles/test_debounce.dir/test_debounce.c.o
+FAILED: tests/CMakeFiles/test_debounce.dir/test_debounce.c.o 
+/usr/bin/cc  -I/w/firmware/include -I/w/build/_deps/unity-src/src -I/w/build/_deps/unity-build -std=c11 -Wall -Wextra -Werror -fsanitize=address,undefined -fno-sanitize-recover=undefined -fno-omit-frame-pointer -MD -MT tests/CMakeFiles/test_debounce.dir/test_debounce.c.o -MF tests/CMakeFiles/test_debounce.dir/test_debounce.c.o.d -o tests/CMakeFiles/test_debounce.dir/test_debounce.c.o -c /w/firmware/tests/test_debounce.c
+/w/firmware/tests/test_debounce.c:135:1: fatal error: error writing to /tmp/ccGcurxC.s: No space left on device
+  135 | }
+      | ^
+compilation terminated.
+ninja: build stopped: subcommand failed.

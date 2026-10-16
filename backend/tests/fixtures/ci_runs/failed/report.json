@@ -1,0 +1,70 @@
+{
+  "schema": "sfci.run-report/1",
+  "generated_at": "2026-10-15T06:40:07Z",
+  "github": {
+    "repository": "acme/fw",
+    "run_id": 30433701,
+    "run_attempt": 1,
+    "sha": "41d8e37920445bf2b14232549a04360c622148b8",
+    "ref": "refs/heads/main",
+    "job": "host-cmake",
+    "workflow_ref": "acme/fw/.github/workflows/firmware-ci.yml@refs/heads/main"
+  },
+  "stages": [
+    {
+      "name": "configure",
+      "status": "passed",
+      "exit_code": 0,
+      "started_at": "2026-10-15T06:40:03Z",
+      "finished_at": "2026-10-15T06:40:07Z",
+      "required": true
+    },
+    {
+      "name": "compile",
+      "status": "passed",
+      "exit_code": 0,
+      "started_at": "2026-10-15T06:40:07Z",
+      "finished_at": "2026-10-15T06:40:07Z",
+      "required": true
+    },
+    {
+      "name": "test",
+      "status": "failed",
+      "exit_code": 8,
+      "started_at": "2026-10-15T06:40:07Z",
+      "finished_at": "2026-10-15T06:40:07Z",
+      "required": true
+    },
+    {
+      "name": "analyze",
+      "status": "skipped",
+      "exit_code": null,
+      "started_at": null,
+      "finished_at": null,
+      "required": true
+    },
+    {
+      "name": "package",
+      "status": "skipped",
+      "exit_code": null,
+      "started_at": null,
+      "finished_at": null,
+      "required": true
+    }
+  ],
+  "toolchain": {
+    "gcc": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "cmake": "cmake version 3.28.3"
+  },
+  "coverage": null,
+  "cppcheck": null,
+  "junit": [
+    {
+      "path": "junit/ctest.xml",
+      "size": 3037,
+      "sha256": "28608cfb43badc3d15dc4536ed1dbbea48e79c778be99f4d7054f258eff760df"
+    }
+  ],
+  "artifact_name": "sfci-out-host-cmake-attempt-1",
+  "manifest": null
+}

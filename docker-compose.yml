@@ -1,0 +1,118 @@
+name: siliconflow
+
+# Secrets come from the environment or a git-ignored .env (see .env.example).
+x-backend: &backend
+  image: siliconflow-backend:dev
+  build:
+    context: ./backend
+    target: runtime
+  environment:
+    SFCI_DATABASE_URL: postgresql+asyncpg://sfci:${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD (see .env.example)}@postgres:5432/sfci
+    SFCI_ENV: dev
+    SFCI_LOG_LEVEL: ${SFCI_LOG_LEVEL:-INFO}
+    # Unset: the webhook endpoint rejects every delivery with 503.
+    SFCI_GITHUB_WEBHOOK_SECRET: ${SFCI_GITHUB_WEBHOOK_SECRET:-}
+    # Unset: manual builds and cancellation answer 503 (docs/github-app.md).
+    SFCI_GITHUB_APP_ID: ${SFCI_GITHUB_APP_ID:-}
+    SFCI_GITHUB_APP_PRIVATE_KEY: ${SFCI_GITHUB_APP_PRIVATE_KEY:-}
+    # Run reports must carry a GitHub OIDC token for this audience.
+    SFCI_OIDC_AUDIENCE: ${SFCI_OIDC_AUDIENCE:-siliconflow}
+    SFCI_ARTIFACT_ROOT: /var/lib/sfci/artifacts
+  volumes:
+    # Shared by the API (downloads) and the worker (ingestion).
+    - artifacts:/var/lib/sfci/artifacts
+
+services:
+  postgres:
+    image: postgres:16@sha256:ca0bd484cb98bf4b24eb1010e73fb3fcbd6714d240fbc1a10eea5b7dbecb641d
+    environment:
+      POSTGRES_USER: sfci
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD (see .env.example)}
+      POSTGRES_DB: sfci
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "127.0.0.1:5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sfci -d sfci"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  # One-shot: applies migrations, then exits. backend and worker wait for it.
+  migrate:
+    <<: *backend
+    command: ["alembic", "upgrade", "head"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: "no"
+
+  backend:
+    <<: *backend
+    ports:
+      - "127.0.0.1:8000:8000"
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD", "python", "-m", "app.healthcheck", "api"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+
+  worker:
+    <<: *backend
+    command: ["python", "-m", "app.worker"]
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD", "python", "-m", "app.healthcheck", "worker"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+
+  # Production build of the UI on http://localhost:8080; /api is proxied to backend.
+  frontend:
+    image: siliconflow-frontend:dev
+    build:
+      context: ./frontend
+    ports:
+      - "127.0.0.1:8080:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1/healthz"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
+
+  # Backend test suite against the real Postgres service:
+  #   docker compose run --rm --build tests
+  # Each run creates and drops its own throwaway database.
+  tests:
+    profiles: ["test"]
+    image: siliconflow-backend:test
+    build:
+      context: ./backend
+      target: test
+    environment:
+      SFCI_TEST_ADMIN_DATABASE_URL: postgresql+asyncpg://sfci:${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD (see .env.example)}@postgres:5432/postgres
+      SFCI_SCRIPTS_DIR: /scripts
+    volumes:
+      # scripts/metrics_report.py is tested against the same database.
+      - ./scripts:/scripts:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  pgdata:
+  artifacts:

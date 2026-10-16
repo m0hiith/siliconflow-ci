@@ -1,0 +1,14 @@
+[1/15] Building C object CMakeFiles/sensor_logic.dir/src/sensor_logic.c.o
+FAILED: CMakeFiles/sensor_logic.dir/src/sensor_logic.c.o 
+/usr/bin/cc  -I/w/firmware/include -std=c11 -Wall -Wextra -Werror -fsanitize=address,undefined -fno-sanitize-recover=undefined -fno-omit-frame-pointer -MD -MT CMakeFiles/sensor_logic.dir/src/sensor_logic.c.o -MF CMakeFiles/sensor_logic.dir/src/sensor_logic.c.o.d -o CMakeFiles/sensor_logic.dir/src/sensor_logic.c.o -c /w/firmware/src/sensor_logic.c
+/w/firmware/src/sensor_logic.c: In function 'sl_mavg_ready':
+/w/firmware/src/sensor_logic.c:74:20: error: 'SL_MAVG_LIMIT' undeclared (first use in this function)
+   74 |     if (f->count > SL_MAVG_LIMIT) {
+      |                    ^~~~~~~~~~~~~
+/w/firmware/src/sensor_logic.c:74:20: note: each undeclared identifier is reported only once for each function it appears in
+[2/15] Generating version.h from git describe
+[3/15] Building C object CMakeFiles/hal_fake.dir/src/hal_fake.c.o
+[4/15] Building C object tests/CMakeFiles/test_moving_average.dir/test_moving_average.c.o
+[5/15] Building C object tests/CMakeFiles/test_threshold.dir/test_threshold.c.o
+[6/15] Building C object tests/CMakeFiles/test_debounce.dir/test_debounce.c.o
+ninja: build stopped: subcommand failed.

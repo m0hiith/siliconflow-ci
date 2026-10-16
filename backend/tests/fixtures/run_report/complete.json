@@ -1,0 +1,95 @@
+{
+  "schema": "sfci.run-report/1",
+  "generated_at": "2026-10-14T18:07:34Z",
+  "github": {
+    "repository": "acme/fw",
+    "run_id": 30433642,
+    "run_attempt": 1,
+    "sha": "3484a3fb816e0859fd6e1cea078d76385ff50625",
+    "ref": "refs/heads/main",
+    "job": "host-cmake",
+    "workflow_ref": "acme/fw/.github/workflows/firmware-ci.yml@refs/heads/main"
+  },
+  "stages": [
+    {
+      "name": "configure",
+      "status": "passed",
+      "exit_code": 0,
+      "started_at": "2026-10-14T09:01:00Z",
+      "finished_at": "2026-10-14T09:01:04Z",
+      "required": true
+    },
+    {
+      "name": "compile",
+      "status": "passed",
+      "exit_code": 0,
+      "started_at": "2026-10-14T09:01:04Z",
+      "finished_at": "2026-10-14T09:01:20Z",
+      "required": true
+    },
+    {
+      "name": "test",
+      "status": "passed",
+      "exit_code": 0,
+      "started_at": "2026-10-14T09:01:20Z",
+      "finished_at": "2026-10-14T09:01:23Z",
+      "required": true
+    },
+    {
+      "name": "analyze",
+      "status": "passed",
+      "exit_code": 0,
+      "started_at": "2026-10-14T09:01:23Z",
+      "finished_at": "2026-10-14T09:01:31Z",
+      "required": true
+    },
+    {
+      "name": "package",
+      "status": "passed",
+      "exit_code": 0,
+      "started_at": "2026-10-14T09:01:31Z",
+      "finished_at": "2026-10-14T09:01:32Z",
+      "required": true
+    }
+  ],
+  "toolchain": {
+    "gcc": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "cmake": "cmake version 3.28.3"
+  },
+  "coverage": {
+    "line_percent": 91.25,
+    "lines_covered": 73,
+    "lines_valid": 80
+  },
+  "cppcheck": {
+    "error": 0,
+    "warning": 1,
+    "style": 3,
+    "performance": 0,
+    "portability": 0,
+    "information": 2
+  },
+  "junit": [
+    {
+      "path": "junit/ctest.xml",
+      "size": 733,
+      "sha256": "204c4d0134d9f55a66e9e1eed0ec9a1d9296937d9c9016a234bfb602570879c5"
+    }
+  ],
+  "artifact_name": "sfci-out-host-cmake-attempt-1",
+  "manifest": {
+    "schema": "sfci.artifact-manifest/1",
+    "files": [
+      {
+        "file": "firmware",
+        "size": 25,
+        "sha256": "1b3e8c74d7192b3bec97b265ac69f6a9080ea01182fe0dd9b0611cc90a6fff42"
+      },
+      {
+        "file": "firmware.bin",
+        "size": 13,
+        "sha256": "e415c872e74266c0e3c0fd4502c69b43e54479f7a7d71f39846d9713020392e1"
+      }
+    ]
+  }
+}

@@ -1,0 +1,63 @@
+# sensor_logic on the SiWx917 SoC (BRD4338A), started from the WiSeConnect
+# example sl_si91x_blinky. Only this file and the sources below are committed;
+# `slc generate` writes the project to out/gen (see ci/siwx917/generate.sh).
+project_name: siwx917_soc
+package: platform_siwx91x_app
+label: SiliconFlow - sensor_logic on SiWx917
+description: >
+  Debounces BTN0, filters the on-chip BJT temperature sensor with a moving
+  average and reports threshold crossings with hysteresis, using the
+  hardware-independent sensor_logic library from firmware/src.
+category: example|peripheral
+quality: development
+component:
+- id: sl_main
+- id: status
+- id: sleeptimer
+- id: sl_si91x_button_917
+  instance:
+  - btn0
+- id: sl_bjt_temperature_sensor
+- id: sl_adc
+- id: syscalls
+- id: si91x_memory_default_config
+- id: si91x_log
+- id: si91x_log_iostream_formatted
+- id: iostream_si91x
+- id: iostream_uart_si91x
+  instance:
+  - vcom
+source:
+- path: app.c
+- path: hal_siwx917.c
+- path: ../src/sensor_logic.c
+- path: ../src/sfci_bounce.c
+- path: ../src/sfci_cli.c
+include:
+- path: .
+  file_list:
+  - path: app.h
+  - path: hal_siwx917.h
+  - path: hal_siwx917_units.h
+  - path: sfci_boot.h
+- path: ../include
+  file_list:
+  - path: hal.h
+  - path: sensor_logic.h
+  - path: sfci_bounce.h
+  - path: sfci_cli.h
+toolchain_settings:
+- option: gcc_compiler_option
+  value: -Wall -Werror -Wno-error=deprecated-declarations
+define:
+- name: SYSCALLS_WRITE
+post_build:
+  profile: wiseconnect_soc
+sdk_extension:
+- id: wiseconnect3_sdk
+  vendor: silabs
+  version: 4.1.1
+sdk:
+  id: simplicity_sdk
+  vendor: silabs
+  version: 2026.6.1
