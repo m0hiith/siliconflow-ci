@@ -251,6 +251,27 @@ has, the same command reports:
 - test outcomes
 - firmware size per profile
 
+## Repository map
+
+| Path | What lives there |
+| --- | --- |
+| [firmware/](firmware/) | C11 firmware, CMake + Ninja, Unity tests, Cortex-M4 and SiWx917 targets |
+| [backend/](backend/) | FastAPI + SQLAlchemy service, worker, Alembic migrations, pytest suite |
+| [frontend/](frontend/) | React + TypeScript UI (Builds, Build Details, Analytics) |
+| [ci/](ci/) | Bash + Python scripts the workflows call (stages, report, size, HIL) |
+| [.github/workflows/](.github/workflows/) | host-cmake, cortex-m4, siwx917-soc, HIL and toolchain-image workflows |
+| [.siliconflow/gates.yml](.siliconflow/gates.yml) | Release gate policy for this repository |
+| [docs/](docs/) | Deep dives: run reports, gates, GitHub App, HIL |
+
+## Key terms
+
+- **Run report**: the JSON facts a CI job posts at the end (`sfci.run-report/1`).
+- **Profile**: one build flavour, e.g. `host-cmake`, `cortex-m4`, `siwx917-soc`.
+- **Gate**: one rule in `gates.yml` (e.g. `line_coverage_min: 80`).
+- **Release-eligible**: the build passed *and* every gate passed on a release ref.
+- **`errored`**: the CI infrastructure broke, so the firmware is not blamed.
+- **HIL**: hardware-in-the-loop; flashing a real BRD4338A board and checking it boots.
+
 ## Limitations
 
 - **No real builds yet.** The workflows still reference placeholder toolchain
