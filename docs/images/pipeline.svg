@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="260" viewBox="0 0 960 260" role="img" aria-label="Pipeline: push, build in GitHub Actions, report facts, verify on server, evaluate gates, release-eligible">
+  <style>
+    .card{fill:#ffffff;stroke:#d0d7de}
+    .t{fill:#1f2328;font:600 15px -apple-system,Segoe UI,Helvetica,Arial,sans-serif}
+    .s{fill:#57606a;font:12.5px -apple-system,Segoe UI,Helvetica,Arial,sans-serif}
+    .n{fill:#ffffff;font:700 14px -apple-system,Segoe UI,Helvetica,Arial,sans-serif}
+    .bg{fill:#f6f8fa}
+    .arrow{stroke:#8c959f;stroke-width:2.5;fill:none}
+    .lane{fill:#57606a;font:600 12px -apple-system,Segoe UI,Helvetica,Arial,sans-serif;letter-spacing:1px}
+    @media (prefers-color-scheme: dark){
+      .card{fill:#161b22;stroke:#30363d}
+      .t{fill:#e6edf3}.s{fill:#9198a1}.bg{fill:#0d1117}.lane{fill:#9198a1}
+      .arrow{stroke:#6e7681}
+    }
+  </style>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0L10 5L0 10z" fill="#8c959f"/>
+    </marker>
+  </defs>
+  <rect class="bg" width="960" height="260" rx="14"/>
+  <text class="lane" x="40" y="36">GITHUB ACTIONS · EXECUTES</text>
+  <text class="lane" x="356" y="36">SILICONFLOW · RECORDS, VERIFIES, GATES</text>
+  <line x1="340" y1="24" x2="340" y2="236" stroke="#8c959f" stroke-dasharray="4 5"/>
+
+  <g id="steps">
+    <g transform="translate(30 60)">
+      <rect class="card" width="130" height="150" rx="12"/>
+      <circle cx="26" cy="28" r="14" fill="#0969da"/><text class="n" x="26" y="33" text-anchor="middle">1</text>
+      <text class="t" x="14" y="72">Push / PR</text>
+      <text class="s" x="14" y="96">Commit to main,</text>
+      <text class="s" x="14" y="114">a PR, a tag, or a</text>
+      <text class="s" x="14" y="132">manual build</text>
+    </g>
+    <g transform="translate(185 60)">
+      <rect class="card" width="130" height="150" rx="12"/>
+      <circle cx="26" cy="28" r="14" fill="#0969da"/><text class="n" x="26" y="33" text-anchor="middle">2</text>
+      <text class="t" x="14" y="72">Build &amp; test</text>
+      <text class="s" x="14" y="96">compile, Unity</text>
+      <text class="s" x="14" y="114">tests, cppcheck,</text>
+      <text class="s" x="14" y="132">coverage, size</text>
+    </g>
+    <g transform="translate(365 60)">
+      <rect class="card" width="130" height="150" rx="12"/>
+      <circle cx="26" cy="28" r="14" fill="#8250df"/><text class="n" x="26" y="33" text-anchor="middle">3</text>
+      <text class="t" x="14" y="72">Report facts</text>
+      <text class="s" x="14" y="96">run report +</text>
+      <text class="s" x="14" y="114">OIDC JWT.</text>
+      <text class="s" x="14" y="132">No status field.</text>
+    </g>
+    <g transform="translate(520 60)">
+      <rect class="card" width="130" height="150" rx="12"/>
+      <circle cx="26" cy="28" r="14" fill="#8250df"/><text class="n" x="26" y="33" text-anchor="middle">4</text>
+      <text class="t" x="14" y="72">Verify</text>
+      <text class="s" x="14" y="96">re-hash every</text>
+      <text class="s" x="14" y="114">artifact (SHA-256),</text>
+      <text class="s" x="14" y="132">parse JUnit + logs</text>
+    </g>
+    <g transform="translate(675 60)">
+      <rect class="card" width="130" height="150" rx="12"/>
+      <circle cx="26" cy="28" r="14" fill="#8250df"/><text class="n" x="26" y="33" text-anchor="middle">5</text>
+      <text class="t" x="14" y="72">Gate</text>
+      <text class="s" x="14" y="96">gates.yml at the</text>
+      <text class="s" x="14" y="114">build's commit:</text>
+      <text class="s" x="14" y="132">tests, cov, size</text>
+    </g>
+    <g transform="translate(830 60)">
+      <rect width="104" height="150" rx="12" fill="#1a7f37"/>
+      <path d="M36 52l12 12 22-26" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+      <text class="n" x="52" y="100" text-anchor="middle">Release-</text>
+      <text class="n" x="52" y="120" text-anchor="middle">eligible</text>
+    </g>
+  </g>
+  <g class="arrow" marker-end="url(#a)">
+    <path d="M162 135h20"/><path d="M317 135h45"/><path d="M497 135h20"/><path d="M652 135h20"/><path d="M807 135h20"/>
+  </g>
+</svg>

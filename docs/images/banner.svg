@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="220" viewBox="0 0 960 220" role="img" aria-label="SiliconFlow CI: build, test and release gating for embedded firmware">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b1f3a"/>
+      <stop offset="1" stop-color="#123c5c"/>
+    </linearGradient>
+    <pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse">
+      <path d="M24 0H0V24" fill="none" stroke="#ffffff" stroke-opacity="0.05"/>
+    </pattern>
+  </defs>
+  <rect width="960" height="220" rx="16" fill="url(#bg)"/>
+  <rect width="960" height="220" rx="16" fill="url(#grid)"/>
+  <!-- chip -->
+  <g transform="translate(70 50)">
+    <g stroke="#5fd3b3" stroke-width="4" stroke-linecap="round">
+      <path d="M30 0v-14M60 0v-14M90 0v-14M30 120v14M60 120v14M90 120v14M0 30h-14M0 60h-14M0 90h-14M120 30h14M120 60h14M120 90h14"/>
+    </g>
+    <rect width="120" height="120" rx="14" fill="#0f2c48" stroke="#5fd3b3" stroke-width="4"/>
+    <path d="M34 62l18 18 36-40" fill="none" stroke="#5fd3b3" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <g font-family="-apple-system, Segoe UI, Helvetica, Arial, sans-serif">
+    <text x="250" y="98" fill="#ffffff" font-size="48" font-weight="700">SiliconFlow CI</text>
+    <text x="252" y="136" fill="#b9d3ea" font-size="20">Build, test and release gating for embedded firmware</text>
+    <g font-size="15" font-weight="600">
+      <rect x="252" y="158" width="190" height="30" rx="15" fill="#1d4f75"/>
+      <text x="347" y="178" fill="#e6f1fb" text-anchor="middle">Actions executes</text>
+      <rect x="452" y="158" width="190" height="30" rx="15" fill="#1d4f75"/>
+      <text x="547" y="178" fill="#e6f1fb" text-anchor="middle">SiliconFlow verifies</text>
+      <rect x="652" y="158" width="190" height="30" rx="15" fill="#5fd3b3"/>
+      <text x="747" y="178" fill="#0b1f3a" text-anchor="middle">Backend decides</text>
+    </g>
+  </g>
+</svg>
