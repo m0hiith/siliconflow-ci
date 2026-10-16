@@ -1,6 +1,37 @@
+<p align="center">
+  <img src="docs/images/banner.svg" alt="SiliconFlow CI: build, test and release gating for embedded firmware" width="100%">
+</p>
+
 # SiliconFlow CI
 
+<p>
+  <img alt="C11" src="https://img.shields.io/badge/firmware-C11%20%C2%B7%20CMake%20%C2%B7%20Unity-555?logo=c">
+  <img alt="Python 3.12" src="https://img.shields.io/badge/backend-Python%203.12%20%C2%B7%20FastAPI-3776AB?logo=python&logoColor=white">
+  <img alt="React" src="https://img.shields.io/badge/frontend-React%20%C2%B7%20TypeScript-20232a?logo=react">
+  <img alt="Postgres" src="https://img.shields.io/badge/db-PostgreSQL-4169E1?logo=postgresql&logoColor=white">
+  <img alt="GitHub Actions" src="https://img.shields.io/badge/CI-GitHub%20Actions-2088FF?logo=githubactions&logoColor=white">
+  <img alt="Target" src="https://img.shields.io/badge/target-Cortex--M4%20%C2%B7%20SiWx917-0b1f3a">
+</p>
+
 **Build, test and release gating for embedded firmware. GitHub Actions runs the builds. SiliconFlow records the results and decides what can ship.**
+
+## At a glance
+
+> **In one sentence:** CI tells you the job went green. SiliconFlow tells you
+> whether *this exact binary* is allowed to ship, and if not, exactly why.
+
+| | What it means |
+| --- | --- |
+| 🏗️ **Actions builds** | Firmware is compiled and tested in GitHub Actions. The backend never runs your code. |
+| 📋 **Runners report facts** | Each job sends a signed *run report*: stages, exit codes, coverage, sizes, hashes. No pass/fail opinion. |
+| 🔐 **Everything is verified** | OIDC JWTs for reports, HMAC-SHA256 for webhooks, SHA-256 re-hash of every artifact. |
+| ⚖️ **The backend decides** | Build status and release eligibility are computed on the server, in one place. |
+| 🚦 **Gates block bad releases** | Test failures, coverage, cppcheck errors and flash size are checked against `gates.yml`. |
+| 🔎 **Failures are explained** | Logs are classified (`compile_error`, `link_error`, `infra_hw`, ...) and linked to the first error line. |
+
+<p align="center">
+  <img src="docs/images/pipeline.svg" alt="Pipeline: push, build and test in Actions, report facts, verify on the server, evaluate gates, release-eligible" width="100%">
+</p>
 
 ## The problem
 
