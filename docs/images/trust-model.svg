@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="300" viewBox="0 0 960 300" role="img" aria-label="Trust model: run reports verified with GitHub OIDC JWT, webhooks with HMAC-SHA256, artifacts re-hashed with SHA-256">
+  <style>
+    .card{fill:#ffffff;stroke:#d0d7de}
+    .h{fill:#1f2328;font:700 16px -apple-system,Segoe UI,Helvetica,Arial,sans-serif}
+    .s{fill:#57606a;font:13px -apple-system,Segoe UI,Helvetica,Arial,sans-serif}
+    .q{fill:#0969da;font:600 12px -apple-system,Segoe UI,Helvetica,Arial,sans-serif;letter-spacing:1px}
+    .lane{fill:#57606a;font:600 12px -apple-system,Segoe UI,Helvetica,Arial,sans-serif;letter-spacing:1px}
+    .ok{fill:#1a7f37;font:600 12.5px -apple-system,Segoe UI,Helvetica,Arial,sans-serif}
+    .no{fill:#cf222e;font:600 12.5px -apple-system,Segoe UI,Helvetica,Arial,sans-serif}
+    .bg{fill:#f6f8fa}
+    .rule{stroke:#d0d7de}
+    @media (prefers-color-scheme: dark){
+      .card{fill:#161b22;stroke:#30363d}.h{fill:#e6edf3}.s{fill:#9198a1}.bg{fill:#0d1117}
+      .q{fill:#4493f8}.lane{fill:#9198a1}.ok{fill:#3fb950}.no{fill:#f85149}.rule{stroke:#30363d}
+    }
+  </style>
+  <rect class="bg" width="960" height="300" rx="14"/>
+  <text class="lane" x="30" y="36">NOTHING FROM CI IS TRUSTED UNTIL THE SERVER CHECKS IT</text>
+
+  <g transform="translate(30 56)">
+    <rect class="card" width="285" height="218" rx="12"/>
+    <text class="q" x="20" y="32">RUN REPORTS</text>
+    <text class="h" x="20" y="60">GitHub OIDC JWT</text>
+    <text class="s" x="20" y="88">Signed by GitHub, not by the job.</text>
+    <text class="s" x="20" y="108">Claims must match the build:</text>
+    <text class="s" x="20" y="128">repo · run · attempt · commit SHA</text>
+    <line class="rule" x1="20" y1="148" x2="265" y2="148"/>
+    <text class="ok" x="20" y="174">✓ proves which run sent it</text>
+    <text class="no" x="20" y="198">✗ wrong claims or a status field → 422</text>
+  </g>
+
+  <g transform="translate(337 56)">
+    <rect class="card" width="285" height="218" rx="12"/>
+    <text class="q" x="20" y="32">WEBHOOKS</text>
+    <text class="h" x="20" y="60">HMAC-SHA256</text>
+    <text class="s" x="20" y="88">Signed with a shared secret.</text>
+    <text class="s" x="20" y="108">Deduplicated on</text>
+    <text class="s" x="20" y="128">X-GitHub-Delivery</text>
+    <line class="rule" x1="20" y1="148" x2="265" y2="148"/>
+    <text class="ok" x="20" y="174">✓ redelivery changes nothing</text>
+    <text class="no" x="20" y="198">✗ bad signature → rejected</text>
+  </g>
+
+  <g transform="translate(644 56)">
+    <rect class="card" width="286" height="218" rx="12"/>
+    <text class="q" x="20" y="32">ARTIFACTS</text>
+    <text class="h" x="20" y="60">SHA-256 re-hash</text>
+    <text class="s" x="20" y="88">The server downloads every file</text>
+    <text class="s" x="20" y="108">and hashes it again itself.</text>
+    <text class="s" x="20" y="128">Stored at sha256/ab/cd/&lt;hash&gt;</text>
+    <line class="rule" x1="20" y1="148" x2="266" y2="148"/>
+    <text class="ok" x="20" y="174">✓ the binary is the one CI built</text>
+    <text class="no" x="20" y="198">✗ any mismatch → nothing stored</text>
+  </g>
+</svg>

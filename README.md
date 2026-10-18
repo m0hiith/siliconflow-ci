@@ -107,10 +107,31 @@ reaches a verdict.**
   the stored ELF) and the release ref. Any missing measurement fails its gate.
   Pull request builds are never eligible.
 
+### Trust model: verify, don't trust
+
+Three different inputs arrive from CI, and each has its own check. A
+report, webhook or artifact that fails its check is rejected before it can
+change anything.
+
+<p align="center">
+  <img src="docs/images/trust-model.svg" alt="Run reports are verified with a GitHub OIDC JWT, webhooks with HMAC-SHA256, and artifacts by re-hashing with SHA-256 on the server" width="100%">
+</p>
+
 ### Passed is not releasable
 
 <p align="center">
   <img src="docs/images/passed-vs-releasable.svg" alt="Two separate questions: did the build pass, and is the artifact release-eligible" width="100%">
+</p>
+
+### How release gates decide
+
+Once a build passes, every rule in
+[.siliconflow/gates.yml](.siliconflow/gates.yml) is checked. If any rule fails,
+or its measurement is missing, the artifact is not eligible, and the UI shows
+which rule blocked it.
+
+<p align="center">
+  <img src="docs/images/release-gates.svg" alt="A passed build is checked against required stages, test failures, line coverage, cppcheck errors, text size per profile and release refs; all pass means release-eligible, any failure means not eligible" width="100%">
 </p>
 
 ### Build status lifecycle
@@ -161,6 +182,10 @@ sequenceDiagram
 
 When a build fails, the stage log is classified so you know *who* needs to act.
 
+<p align="center">
+  <img src="docs/images/failure-triage.svg" alt="A failed stage log goes through classify.py and is routed to the firmware developer, the hardware lab, or the CI platform team" width="100%">
+</p>
+
 | Class | Typical cause | Who fixes it |
 | --- | --- | --- |
 | `compile_error` | `error:` from GCC, `-Werror`, CMake errors | Firmware dev |
@@ -178,14 +203,17 @@ one is tested against real captured logs in
 Details: [run reports](docs/run-reports.md) · [release gates](docs/release-gates.md) ·
 [GitHub App](docs/github-app.md) · [hardware-in-the-loop](docs/hil.md)
 
-## Screenshots
+## What the UI shows
 
-<!-- Replace each placeholder with a real screenshot from a real build. -->
+Screenshots will be added from the first real CI builds. The UI never shows
+mock data, so it has nothing to show until real builds are recorded.
 
-| Build Details (failed) | Artifacts | Analytics |
-| --- | --- | --- |
-| ![Build Details, failed build](docs/screenshots/build-details-failed.png) | ![Artifacts tab](docs/screenshots/artifacts.png) | ![Analytics](docs/screenshots/analytics.png) |
-| _TODO: failure card with its class and first error, linked to the log line_ | _TODO: server SHA-256, size, release-eligible flag and gate results_ | _TODO: pass rate per week, durations, flash/RAM per commit, flaky tests_ |
+| Screen | What you see |
+| --- | --- |
+| **Builds** | Every build with its live status, profile, commit and trigger |
+| **Build Details** | Stage timeline, each Unity test case, toolchain versions, and for a failed build the failure class and first error linked to the log line |
+| **Artifacts** | SHA-256 computed by the server, size, release-eligible flag and the result of every gate |
+| **Analytics** | Weekly pass rate, p50/p90 duration, flash/RAM per commit and flaky tests. Shows "Not enough data" until there are 10 builds |
 
 ## Demo script (7 steps)
 
@@ -274,10 +302,12 @@ has, the same command reports:
 
 ## Limitations
 
-- **No real builds yet.** The workflows still reference placeholder toolchain
-  image digests (`TODO_TOOLCHAIN_IMAGE_DIGEST`, `TODO_SIWX917_IMAGE_DIGEST`).
-  Until the images are published and pinned, CI cannot run end to end, and the
-  results above stay empty. The backend is exercised by a pytest suite against
+- **No real builds recorded yet.** The host-cmake and cortex-m4 workflows
+  are pinned to the published toolchain image, but no SiliconFlow instance has
+  been deployed where GitHub can reach it, so the results above stay empty.
+  The siwx917-soc workflow needs a private Simplicity SDK image that is not
+  published, so it is off until the repository variable
+  `SFCI_SIWX917_ENABLED` is set to `true` and its digest is pinned. The backend is exercised by a pytest suite against
   real Postgres, using fixtures captured from real CI output.
 - **No sign-in.** GitHub OAuth is not implemented. Manual builds and
   cancellation fail closed with `401` for everyone. The read API and the UI

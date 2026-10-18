@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="320" viewBox="0 0 960 320" role="img" aria-label="Release gates: a passed build is checked against every rule in gates.yml; all pass means release-eligible, any failure or missing measurement means not eligible">
+  <style>
+    .card{fill:#ffffff;stroke:#d0d7de}
+    .t{fill:#1f2328;font:600 14px -apple-system,Segoe UI,Helvetica,Arial,sans-serif}
+    .s{fill:#57606a;font:12.5px -apple-system,Segoe UI,Helvetica,Arial,sans-serif}
+    .m{fill:#57606a;font:12px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+    .n{fill:#ffffff;font:700 14px -apple-system,Segoe UI,Helvetica,Arial,sans-serif}
+    .lane{fill:#57606a;font:600 12px -apple-system,Segoe UI,Helvetica,Arial,sans-serif;letter-spacing:1px}
+    .bg{fill:#f6f8fa}
+    .arrow{stroke:#8c959f;stroke-width:2.5;fill:none}
+    @media (prefers-color-scheme: dark){
+      .card{fill:#161b22;stroke:#30363d}.t{fill:#e6edf3}.s{fill:#9198a1}.m{fill:#9198a1}
+      .bg{fill:#0d1117}.lane{fill:#9198a1}.arrow{stroke:#6e7681}
+    }
+  </style>
+  <defs>
+    <marker id="g" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0L10 5L0 10z" fill="#8c959f"/>
+    </marker>
+  </defs>
+  <rect class="bg" width="960" height="320" rx="14"/>
+  <text class="lane" x="30" y="36">.siliconflow/gates.yml · READ AT THE BUILD'S OWN COMMIT</text>
+
+  <g transform="translate(30 108)">
+    <rect width="140" height="110" rx="12" fill="#1a7f37"/>
+    <text class="n" x="70" y="48" text-anchor="middle">Build</text>
+    <text class="n" x="70" y="68" text-anchor="middle">passed</text>
+  </g>
+
+  <g transform="translate(220 52)">
+    <rect class="card" width="450" height="236" rx="12"/>
+    <text class="t" x="20" y="30">Every rule must pass</text>
+    <text class="m" x="20" y="62">required_stages</text><text class="s" x="185" y="62">configure → package all passed</text>
+    <text class="m" x="20" y="92">test_failures</text><text class="s" x="185" y="92">= 0 failed JUnit cases</text>
+    <text class="m" x="20" y="122">line_coverage_min</text><text class="s" x="185" y="122">≥ 80% (gcovr)</text>
+    <text class="m" x="20" y="152">analysis_errors_max</text><text class="s" x="185" y="152">= 0 cppcheck errors</text>
+    <text class="m" x="20" y="182">text_bytes_max</text><text class="s" x="185" y="182">.text size per profile, measured by server</text>
+    <text class="m" x="20" y="212">release_refs</text><text class="s" x="185" y="212">main or a v* tag, never a PR</text>
+  </g>
+
+  <g transform="translate(720 52)">
+    <rect width="210" height="108" rx="12" fill="#8250df"/>
+    <text class="n" x="105" y="44" text-anchor="middle">✓ all pass</text>
+    <text class="n" x="105" y="72" text-anchor="middle">release-eligible</text>
+  </g>
+  <g transform="translate(720 180)">
+    <rect width="210" height="108" rx="12" fill="#cf222e"/>
+    <text class="n" x="105" y="40" text-anchor="middle">✗ any fails or</text>
+    <text class="n" x="105" y="60" text-anchor="middle">is missing</text>
+    <text class="n" x="105" y="86" text-anchor="middle">not eligible + why</text>
+  </g>
+
+  <g class="arrow" marker-end="url(#g)">
+    <path d="M172 163h44"/>
+    <path d="M672 120h44"/>
+    <path d="M672 220h44"/>
+  </g>
+</svg>
