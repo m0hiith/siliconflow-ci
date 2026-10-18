@@ -31,6 +31,9 @@ concurrency:
 jobs:
   # The job id is the build's profile in SiliconFlow and in gates.yml.
   siwx917-soc:
+    # Off until the private SDK image exists and its digest is pinned below:
+    # set the repository variable SFCI_SIWX917_ENABLED=true to turn it on.
+    if: vars.SFCI_SIWX917_ENABLED == 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     permissions:

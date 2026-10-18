@@ -31,8 +31,7 @@ jobs:
       packages: read # pull the toolchain image if the ghcr package is private
       id-token: write # OIDC token that authenticates the run report
     container:
-      # TODO(P0.2): pin to the real toolchain image digest (see firmware-ci.yml).
-      image: ghcr.io/OWNER/sfci-toolchain@sha256:TODO_TOOLCHAIN_IMAGE_DIGEST
+      image: ghcr.io/m0hiith/sfci-toolchain@sha256:2ac84f88f5eb74cee2eb2a93b33fd988b82ee2e9060d8627be791439349b7fc2
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
