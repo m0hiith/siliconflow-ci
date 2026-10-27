@@ -14,11 +14,20 @@ from starlette.responses import Response
 from app.api.v1 import router as api_v1_router
 from app.config import Settings, get_settings
 from app.db import make_engine, make_sessionmaker
+from app.demo.replay import DemoReplay
+from app.demo.scenarios import DemoFixtures
+from app.demo.trust import DEMO_JWKS_URL, DemoTrust
 from app.logs import configure_logging
 from app.services.github import GitHubApp
 from app.services.oidc import GitHubOidcVerifier
 
 log = logging.getLogger("sfci.http")
+
+DEMO_WARNING = (
+    "DEMO MODE: replaying recorded sample inputs into database sfci_demo. "
+    "Only demo signers are trusted; GitHub tokens and webhooks are rejected. "
+    "Nothing this instance shows is a production result."
+)
 
 
 class RequestLogMiddleware(BaseHTTPMiddleware):
@@ -51,14 +60,25 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     settings = settings or get_settings()
     configure_logging(settings.log_level)
 
+    # Demo mode (docs/demo.md) swaps in demo signers. Settings validation has
+    # already refused a non-demo database and any production credential.
+    demo = DemoTrust() if settings.demo_mode else None
+    if demo is not None:
+        settings = demo.settings_for(settings)
+        oidc = GitHubOidcVerifier(settings, transport=demo.jwks_transport(), jwks_url=DEMO_JWKS_URL)
+    else:
+        oidc = GitHubOidcVerifier(settings)
     engine = make_engine(settings)
     github = GitHubApp(settings)
-    oidc = GitHubOidcVerifier(settings)
 
     @asynccontextmanager
     async def lifespan(app: FastAPI):
         logging.getLogger("sfci").info("api started", extra={"env": settings.env})
+        if demo is not None:
+            logging.getLogger("sfci").warning(DEMO_WARNING)
         yield
+        if app.state.demo_replay is not None:
+            await app.state.demo_replay.aclose()
         await github.aclose()
         await oidc.aclose()
         await engine.dispose()
@@ -69,6 +89,9 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.state.sessionmaker = make_sessionmaker(engine)
     app.state.github = github
     app.state.oidc = oidc
+    app.state.demo_replay = (
+        DemoReplay(app, DemoFixtures(settings.demo_dir), demo) if demo is not None else None
+    )
     app.add_middleware(RequestLogMiddleware)
     app.include_router(api_v1_router)
     return app

@@ -27,6 +27,7 @@ from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 from app.config import Settings, get_settings
 from app.db import make_engine, make_sessionmaker
 from app.logs import configure_logging
+from app.demo.source import DemoRepoSource
 from app.models import Job, JobStatus, WebhookEvent
 from app.services import artifacts, gates, github_events, outcome, reconciler
 from app.services.github import GitHubApp, RepoSource
@@ -129,7 +130,8 @@ async def process_one(
 async def run(settings: Settings, stop: asyncio.Event) -> None:
     engine = make_engine(settings)
     sessionmaker = make_sessionmaker(engine)
-    github = GitHubApp(settings)
+    # Demo mode (docs/demo.md) reads recorded fixtures instead of GitHub.
+    github: RepoSource = DemoRepoSource(settings) if settings.demo_mode else GitHubApp(settings)
     worker_id = f"{socket.gethostname()}:{os.getpid()}"
     heartbeat = Path(settings.worker_heartbeat_path)
     log.info(
@@ -139,7 +141,9 @@ async def run(settings: Settings, stop: asyncio.Event) -> None:
             "reconcile_interval_s": settings.reconcile_interval_s if github.configured else None,
         },
     )
-    if not github.configured:
+    if settings.demo_mode:
+        log.warning("DEMO MODE: artifacts and gates.yml come from recorded fixtures, not GitHub")
+    elif not github.configured:
         log.warning("reconciler disabled: GitHub App is not configured")
     next_reconcile = time.monotonic()
     try:
@@ -153,7 +157,12 @@ async def run(settings: Settings, stop: asyncio.Event) -> None:
                 heartbeat.touch()
             except Exception:
                 log.exception("worker poll failed")
-            if github.configured and not stop.is_set() and time.monotonic() >= next_reconcile:
+            if (
+                isinstance(github, GitHubApp)
+                and github.configured
+                and not stop.is_set()
+                and time.monotonic() >= next_reconcile
+            ):
                 next_reconcile = time.monotonic() + settings.reconcile_interval_s
                 try:
                     await reconciler.reconcile(sessionmaker, settings, github, heartbeat.touch)

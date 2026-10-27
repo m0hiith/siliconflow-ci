@@ -4,15 +4,21 @@ from typing import Annotated, Literal
 
 from pydantic import Field, SecretStr, field_validator, model_validator
 from pydantic_settings import BaseSettings, NoDecode, SettingsConfigDict
+from sqlalchemy import make_url
 
 WORKFLOW_PATH_RE = re.compile(r"^\.github/workflows/[A-Za-z0-9._-]+\.ya?ml$")
 STAGE_NAME_RE = re.compile(r"^[A-Za-z0-9._-]{1,64}$")
+# Demo data lives in this database and no other (docs/demo.md).
+DEMO_DATABASE = "sfci_demo"
+# Production credentials demo mode refuses to start with.
+PRODUCTION_SECRETS = ("github_webhook_secret", "github_app_id", "github_app_private_key")
 
 
 class Settings(BaseSettings):
     """Runtime configuration, read from SFCI_* environment variables only."""
 
-    model_config = SettingsConfigDict(env_prefix="SFCI_", extra="ignore")
+    # Validation errors never echo their input: it holds the database URL and secrets.
+    model_config = SettingsConfigDict(env_prefix="SFCI_", extra="ignore", hide_input_in_errors=True)
 
     # SecretStr keeps the password out of reprs and logs.
     database_url: SecretStr = Field(
@@ -89,6 +95,13 @@ class Settings(BaseSettings):
     # For compare links between builds.
     github_web_url: str = "https://github.com"
 
+    # Demo mode (docs/demo.md): replays recorded CI inputs through this
+    # backend, in the sfci_demo database, trusting only demo signers made at
+    # startup. Never set in a real deployment; see _check_demo_mode.
+    demo_mode: bool = False
+    # The repository's demo/ directory: scenarios and fixtures.
+    demo_dir: str = "/demo"
+
     @field_validator("github_webhook_secret", "github_app_private_key", "github_app_id", mode="before")
     @classmethod
     def _empty_secret_is_unset(cls, value: object) -> object:
@@ -123,6 +136,23 @@ class Settings(BaseSettings):
                 STAGE_NAME_RE.fullmatch(k) and STAGE_NAME_RE.fullmatch(v) for k, v in profiles.items()
             ):
                 raise ValueError(f"{path!r} needs one or more valid report and build profiles")
+        return self
+
+    @model_validator(mode="after")
+    def _check_demo_mode(self) -> "Settings":
+        """Demo data and real data never share a database, and demo mode
+        never runs with credentials that could reach a real repository."""
+        database = make_url(self.database_url.get_secret_value()).database
+        if not self.demo_mode:
+            if database == DEMO_DATABASE:
+                raise ValueError(f"database {DEMO_DATABASE!r} holds demo data; it needs SFCI_DEMO_MODE=true")
+            return self
+        if database != DEMO_DATABASE:
+            raise ValueError(f"demo mode only runs against the database {DEMO_DATABASE!r}")
+        if self.env == "prod":
+            raise ValueError("demo mode cannot run with SFCI_ENV=prod")
+        if set_ := [f"SFCI_{name.upper()}" for name in PRODUCTION_SECRETS if getattr(self, name) is not None]:
+            raise ValueError(f"demo mode refuses to start with production credentials set: {', '.join(set_)}")
         return self
 
     def hil_profiles_for(self, workflow_path: str) -> dict[str, str] | None:

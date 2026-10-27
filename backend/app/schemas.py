@@ -379,6 +379,35 @@ class WebhookAck(BaseModel):
     status: Literal["accepted", "duplicate"]
 
 
+class MetaOut(BaseModel):
+    demo_mode: bool = Field(description="True when this instance replays demo inputs (docs/demo.md)")
+    version: str
+
+
+# -------------------------------------------------------------------- demo
+
+
+class DemoEventOut(BaseModel):
+    """One request the replay sent and what the API answered."""
+
+    build: str
+    step: str
+    delivery_id: str | None = None
+    status_code: int
+    result: str
+
+
+class DemoScenarioOut(BaseModel):
+    name: str
+    title: str
+    summary: str
+    state: Literal["idle", "running", "done", "failed"]
+    # Scenario build key -> build id, for builds this database has.
+    build_ids: dict[str, str]
+    events: list[DemoEventOut]
+    error: str | None = None
+
+
 # -------------------------------------------------------------- run report
 # The body CI posts to /api/v1/runs/report (ci/report.py writes it). Every
 # field is a claim by the runner; the backend verifies what it can (identity

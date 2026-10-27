@@ -75,10 +75,17 @@ class RunClaims:
 
 
 class GitHubOidcVerifier:
-    def __init__(self, settings: Settings, transport: httpx.AsyncBaseTransport | None = None) -> None:
+    def __init__(
+        self,
+        settings: Settings,
+        transport: httpx.AsyncBaseTransport | None = None,
+        jwks_url: str | None = None,
+    ) -> None:
         self._issuer = settings.oidc_issuer.rstrip("/")
         self._audience = settings.oidc_audience
-        self._jwks_url = f"{self._issuer}/.well-known/jwks"
+        # GitHub publishes its keys under the issuer; demo mode (app.demo.trust)
+        # serves its own from memory.
+        self._jwks_url = jwks_url or f"{self._issuer}/.well-known/jwks"
         self._cache_s = settings.oidc_jwks_cache_s
         self._http = httpx.AsyncClient(
             timeout=settings.github_api_timeout_s,
