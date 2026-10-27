@@ -62,3 +62,5 @@ function errorMessage(error: unknown): string | undefined {
   }
   return undefined;
 }
+export type Meta = Schemas["MetaOut"];
+export type DemoScenario = Schemas["DemoScenarioOut"];

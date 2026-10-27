@@ -4,6 +4,7 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ApiError } from "./api/client";
 import { Layout } from "./components/Layout";
+import { DemoProvider } from "./demo/DemoContext";
 import { EmptyState } from "./components/States";
 import { Analytics } from "./pages/Analytics";
 import { BuildDetail } from "./pages/BuildDetail";
@@ -25,6 +26,7 @@ createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
+        <DemoProvider>
         <Routes>
           <Route element={<Layout />}>
             <Route index element={<Overview />} />
@@ -34,6 +36,7 @@ createRoot(document.getElementById("root")!).render(
             <Route path="*" element={<EmptyState title="Page not found" />} />
           </Route>
         </Routes>
+        </DemoProvider>
       </BrowserRouter>
     </QueryClientProvider>
   </StrictMode>,

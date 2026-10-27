@@ -38,6 +38,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/meta": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Meta
+         * @description What kind of instance this is. The UI shows the demo banner from this.
+         */
+        get: operations["meta_api_v1_meta_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/projects": {
         parameters: {
             query?: never;
@@ -517,6 +537,44 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/demo/scenarios": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Scenarios */
+        get: operations["list_scenarios_api_v1_demo_scenarios_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/demo/scenarios/{name}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Start Scenario
+         * @description Replay a scenario's recorded inputs through this API. Replaying one
+         *     again changes nothing: its builds already exist.
+         */
+        post: operations["start_scenario_api_v1_demo_scenarios__name__post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -747,6 +805,44 @@ export interface components {
          * @enum {string}
          */
         BuildTrigger: "push" | "pull_request" | "manual";
+        /**
+         * DemoEventOut
+         * @description One request the replay sent and what the API answered.
+         */
+        DemoEventOut: {
+            /** Build */
+            build: string;
+            /** Step */
+            step: string;
+            /** Delivery Id */
+            delivery_id?: string | null;
+            /** Status Code */
+            status_code: number;
+            /** Result */
+            result: string;
+        };
+        /** DemoScenarioOut */
+        DemoScenarioOut: {
+            /** Name */
+            name: string;
+            /** Title */
+            title: string;
+            /** Summary */
+            summary: string;
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "idle" | "running" | "done" | "failed";
+            /** Build Ids */
+            build_ids: {
+                [key: string]: string;
+            };
+            /** Events */
+            events: components["schemas"]["DemoEventOut"][];
+            /** Error */
+            error?: string | null;
+        };
         /** DurationDayOut */
         DurationDayOut: {
             /** Profile */
@@ -977,6 +1073,16 @@ export interface components {
             size: number;
             /** Sha256 */
             sha256: string;
+        };
+        /** MetaOut */
+        MetaOut: {
+            /**
+             * Demo Mode
+             * @description True when this instance replays demo inputs (docs/demo.md)
+             */
+            demo_mode: boolean;
+            /** Version */
+            version: string;
         };
         /**
          * MetricsSummaryOut
@@ -1526,6 +1632,26 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["HealthOut"];
+                };
+            };
+        };
+    };
+    meta_api_v1_meta_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MetaOut"];
                 };
             };
         };
@@ -2407,6 +2533,74 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["WebhookAck"];
                 };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_scenarios_api_v1_demo_scenarios_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DemoScenarioOut"][];
+                };
+            };
+        };
+    };
+    start_scenario_api_v1_demo_scenarios__name__post: {
+        parameters: {
+            query?: {
+                /** @description Pacing; 2 = twice as fast */
+                speed?: number;
+            };
+            header?: never;
+            path: {
+                name: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DemoScenarioOut"];
+                };
+            };
+            /** @description Not in demo mode, or no such scenario */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description The scenario is already running */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
             /** @description Validation Error */
             422: {

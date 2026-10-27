@@ -12,6 +12,7 @@ import { hasVersions, VersionChips } from "../components/detail/VersionChips";
 import { EmptyState, ErrorState, Loading } from "../components/States";
 import { StatusBadge } from "../components/StatusBadge";
 import { buildSeconds, firstLine, formatDuration, formatUtc, shortSha } from "../format";
+import { useTerm } from "../demo/DemoContext";
 import { useNow } from "../useNow";
 
 const TABS = ["logs", "tests", "artifacts", "size"] as const;
@@ -38,6 +39,7 @@ export function BuildDetail() {
 function Details({ build }: { build: Build }) {
   const [params, setParams] = useSearchParams();
   const stages = useStages(build);
+  const term = useTerm();
   const stageList = stages.data ?? [];
 
   const tab: Tab = TABS.find((t) => t === params.get("tab")) ?? "logs";
@@ -71,7 +73,7 @@ function Details({ build }: { build: Build }) {
     <div className="detail">
       <Header build={build} />
 
-      <section className="panel panel--pad" aria-label="stage timeline">
+      <section className="panel panel--pad" aria-label="stage timeline" data-tour="stage-timeline">
         {stages.isError ? (
           <ErrorState error={stages.error} onRetry={stages.refetch} />
         ) : stageList.length === 0 ? (
@@ -103,7 +105,7 @@ function Details({ build }: { build: Build }) {
               className="tab"
               onClick={() => update({ tab: t, line: undefined })}
             >
-              {t}
+              {t === "artifacts" ? term(t, "firmware files") : t}
             </button>
           ))}
           {tab === "logs" && stageList.length > 0 && (
@@ -122,7 +124,7 @@ function Details({ build }: { build: Build }) {
             </div>
           )}
         </div>
-        <div className="tabpanel" role="tabpanel">
+        <div className="tabpanel" role="tabpanel" data-tour={tab === "artifacts" ? "artifacts" : undefined}>
           {tab === "logs" &&
             (stage ? (
               <LogViewer

@@ -25,6 +25,11 @@ export async function mockApi(page: Page, fixture: Fixture): Promise<string[]> {
     const { responses } = fixture;
     let key = url.pathname;
     if (url.pathname.endsWith("/search")) key += `?q=${url.searchParams.get("q")}`;
+    // Every page asks whether the instance is in demo mode; a recorded
+    // (non-demo) instance answers no.
+    if (key === "/api/v1/meta" && !(key in responses)) {
+      return route.fulfill({ json: { demo_mode: false, version: "0.1.0" } });
+    }
     const body = responses[key] as Record<string, unknown> | undefined;
 
     if (body === undefined) {

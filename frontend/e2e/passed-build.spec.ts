@@ -112,3 +112,11 @@ test("usable at 1280 px without horizontal scrolling", async ({ page }) => {
     expect(await fitsWidth(page), `${tab} tab fits 1280 px`).toBe(true);
   }
 });
+
+test("outside demo mode there is no demo banner, tour or plain-language toggle", async ({ page }) => {
+  await page.goto(`${url}?tab=artifacts`);
+  await expect(page.getByRole("columnheader", { name: "SHA-256 (computed by the server)" })).toBeVisible();
+  await expect(page.getByTestId("demo-banner")).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "Start tour" })).toHaveCount(0);
+  await expect(page.getByRole("switch", { name: "Plain language" })).toHaveCount(0);
+});

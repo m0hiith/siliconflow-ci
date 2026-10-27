@@ -49,7 +49,7 @@ export function Analytics() {
   };
 
   return (
-    <>
+    <div data-tour="analytics">
       <div className="page-head">
         <h1>Analytics</h1>
         <span className="page-head__meta">computed from recorded builds; days and weeks are UTC</span>
@@ -93,7 +93,7 @@ export function Analytics() {
         <SizesPanel scope={scope} />
         <FlakyPanel scope={scope} />
       </div>
-    </>
+    </div>
   );
 }
 

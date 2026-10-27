@@ -213,3 +213,28 @@ export function useLogSearch(buildId: string, stage: string, q: string) {
     placeholderData: keepPreviousData,
   });
 }
+
+// -------------------------------------------------------------------- demo
+// docs/demo.md. Outside demo mode the scenario endpoints answer 404 and are
+// never called: useDemoScenarios is enabled only when /meta says demo_mode.
+
+export function useMeta() {
+  return useQuery({
+    queryKey: ["meta"],
+    queryFn: ({ signal }) => unwrap(api.GET("/api/v1/meta", { signal })),
+    staleTime: Infinity,
+  });
+}
+
+export function useDemoScenarios(enabled: boolean) {
+  return useQuery({
+    queryKey: ["demo", "scenarios"],
+    queryFn: ({ signal }) => unwrap(api.GET("/api/v1/demo/scenarios", { signal })),
+    enabled,
+    refetchInterval: (query) => (query.state.data?.some((s) => s.state === "running") ? 1000 : false),
+  });
+}
+
+export function startDemoScenario(name: string, speed: number) {
+  return unwrap(api.POST("/api/v1/demo/scenarios/{name}", { params: { path: { name }, query: { speed } } }));
+}

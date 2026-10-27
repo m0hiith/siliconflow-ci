@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import type { BuildDetail, Stage } from "../../api/client";
 import { useLogHead, usePreviousPassing, useTests } from "../../api/queries";
+import { useTerm } from "../../demo/DemoContext";
 import { shortSha } from "../../format";
 
 /** Why a failed build failed, from the stored log index, JUnit and history. */
@@ -15,13 +16,14 @@ export function FailureCard(props: {
   const head = useLogHead(build.id, failedStage?.name);
   const tests = useTests(build);
   const previous = usePreviousPassing(build, true);
+  const term = useTerm();
 
   const failing = (tests.data ?? []).filter((t) => t.outcome === "failed" || t.outcome === "error");
   const first = head.data?.first_error ?? null;
   const prev = previous.data;
 
   return (
-    <section className="failure" aria-label="failure summary">
+    <section className="failure" aria-label="failure summary" data-tour="failure-card">
       <div className="failure__head">
         <span className="failure__title">Failed</span>
         {failedStage && (
@@ -30,13 +32,13 @@ export function FailureCard(props: {
             {failedStage.exit_code != null && <span className="muted"> (exit {failedStage.exit_code})</span>}
           </span>
         )}
-        <span className="chip-static mono" title="failure class, from the classified stage log">
+        <span className="chip-static mono" title={term("failure class, from the classified stage log", "type of problem, read from the build log")}>
           {build.failure_class ?? "unclassified"}
         </span>
       </div>
 
       <dl className="failure__grid">
-        <dt>First error</dt>
+        <dt>{term("First error", "Where it broke")}</dt>
         <dd>
           {first ? (
             <>

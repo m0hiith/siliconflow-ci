@@ -1,5 +1,6 @@
 import type { BuildDetail, GateResult } from "../../api/client";
 import { useArtifacts, useGates } from "../../api/queries";
+import { useTerm } from "../../demo/DemoContext";
 import { formatBytes, shortSha } from "../../format";
 import { CopyButton } from "../CopyButton";
 import { EmptyState, ErrorState, Loading } from "../States";
@@ -14,6 +15,7 @@ const ARTIFACT_STATE: Record<string, string> = {
 
 export function ArtifactsTab({ build }: { build: BuildDetail }) {
   const artifacts = useArtifacts(build);
+  const term = useTerm();
   if (artifacts.isPending) return <Loading />;
   if (artifacts.isError) return <ErrorState error={artifacts.error} onRetry={artifacts.refetch} />;
   const items = artifacts.data;
@@ -46,8 +48,8 @@ export function ArtifactsTab({ build }: { build: BuildDetail }) {
                 <th>File</th>
                 <th>Kind</th>
                 <th className="num">Size</th>
-                <th>SHA-256 (computed by the server)</th>
-                <th>Release</th>
+                <th>{term("SHA-256 (computed by the server)", "File fingerprint (computed by the server)")}</th>
+                <th>{term("Release", "OK to ship?")}</th>
               </tr>
             </thead>
             <tbody>
@@ -69,7 +71,7 @@ export function ArtifactsTab({ build }: { build: BuildDetail }) {
                     </div>
                   </td>
                   <td className={`mono ${a.release_eligible ? "tone--passed" : "muted"}`}>
-                    {a.release_eligible ? "eligible" : "not eligible"}
+                    {a.release_eligible ? term("eligible", "yes") : term("not eligible", "no")}
                   </td>
                 </tr>
               ))}
@@ -138,20 +140,27 @@ function Provenance({ build }: { build: BuildDetail }) {
 
 function Gates({ build }: { build: BuildDetail }) {
   const gates = useGates(build);
+  const term = useTerm();
   if (gates.isPending) return <Loading />;
   if (gates.isError) return <ErrorState error={gates.error} onRetry={gates.refetch} />;
   const results = gates.data;
   const failed = results.filter((g) => !g.passed);
 
   return (
-    <section className="gates" aria-label="release gates">
+    <section className="gates" aria-label="release gates" data-tour="gates">
       <div className="panel__head">
-        <h2>Release gates</h2>
+        <h2>{term("Release gates", "Release rules")}</h2>
         {results.length > 0 && (
           <span className={failed.length ? "tone--failed" : "tone--passed"}>
             {failed.length
-              ? `not release-eligible: ${failed.length} of ${results.length} checks failed`
-              : `release-eligible: all ${results.length} checks passed`}
+              ? term(
+                  `not release-eligible: ${failed.length} of ${results.length} checks failed`,
+                  `not OK to ship: ${failed.length} of ${results.length} release rules failed`,
+                )
+              : term(
+                  `release-eligible: all ${results.length} checks passed`,
+                  `OK to ship: all ${results.length} release rules passed`,
+                )}
           </span>
         )}
       </div>
@@ -172,7 +181,7 @@ function Gates({ build }: { build: BuildDetail }) {
           </colgroup>
           <thead>
             <tr>
-              <th>Check</th>
+              <th>{term("Check", "Rule")}</th>
               <th>Result</th>
               <th>Observed</th>
               <th>Threshold</th>

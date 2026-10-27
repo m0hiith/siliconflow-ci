@@ -28,7 +28,7 @@ export function Builds() {
 
       <FilterBar filters={filters} update={update} clear={() => setParams({}, { replace: true })} />
 
-      <section className="panel">
+      <section className="panel" data-tour="builds-table">
         {builds.isPending ? (
           <Loading />
         ) : builds.isError ? (

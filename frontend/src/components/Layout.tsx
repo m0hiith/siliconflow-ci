@@ -1,8 +1,11 @@
 import { NavLink, Outlet } from "react-router-dom";
+import { DemoBanner } from "../demo/DemoBanner";
+import { Tour } from "../demo/Tour";
 
 export function Layout() {
   return (
     <div className="app">
+      <DemoBanner />
       <header className="topbar">
         <span className="brand">
           <span className="brand__mark" aria-hidden>
@@ -21,6 +24,7 @@ export function Layout() {
       <main className="main">
         <Outlet />
       </main>
+      <Tour />
     </div>
   );
 }
