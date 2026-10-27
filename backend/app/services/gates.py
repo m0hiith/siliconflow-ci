@@ -63,7 +63,7 @@ from app.models import (
 )
 from app.services.artifacts import repo_installation_id, storage_path
 from app.services.elf import ElfError, text_bytes
-from app.services.github import GitHubApp
+from app.services.github import RepoSource
 
 log = logging.getLogger(__name__)
 
@@ -356,7 +356,7 @@ async def queue_if_passed(session: AsyncSession, build_id: str) -> None:
 
 
 async def load_config(
-    session: AsyncSession, github: GitHubApp | None, build: Build
+    session: AsyncSession, github: RepoSource | None, build: Build
 ) -> GatesConfig:
     """The build's gates.yml. Raises GatesConfigError if it cannot be used;
     a GitHub outage raises GitHubError instead, so the job retries."""
@@ -457,7 +457,7 @@ async def gather_facts(
 
 
 async def evaluate_build(
-    session: AsyncSession, github: GitHubApp | None, settings: Settings, build_id: str
+    session: AsyncSession, github: RepoSource | None, settings: Settings, build_id: str
 ) -> None:
     """The EVALUATE_JOB_KIND job. Idempotent; the caller commits."""
     # The row lock serialises the two jobs a build can get.

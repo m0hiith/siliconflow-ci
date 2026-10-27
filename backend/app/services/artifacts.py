@@ -42,7 +42,7 @@ from app.ids import new_id
 from app.models import Artifact, AuditLog, Build, BuildStage, Repository, RunReport, TestCase
 from app.services import stage_logs
 from app.services.classify import LogIndex
-from app.services.github import GitHubApp, GitHubError
+from app.services.github import GitHubError, RepoSource
 from app.services.junit import JUnitError, parse_junit
 
 log = logging.getLogger(__name__)
@@ -228,7 +228,7 @@ def verify_and_store(
 # -------------------------------------------------------------------- job
 
 
-async def repo_installation_id(session: AsyncSession, github: GitHubApp, repo: Repository) -> int:
+async def repo_installation_id(session: AsyncSession, github: RepoSource, repo: Repository) -> int:
     if repo.gh_installation_id is None:
         repo.gh_installation_id = await github.repository_installation_id(repo.full_name)
         await session.flush()
@@ -253,7 +253,7 @@ async def _finish(
     await session.flush()
 
 
-async def ingest(session: AsyncSession, github: GitHubApp, settings: Settings, build_id: str) -> None:
+async def ingest(session: AsyncSession, github: RepoSource, settings: Settings, build_id: str) -> None:
     report = await session.scalar(
         select(RunReport).where(RunReport.build_id == build_id).with_for_update()
     )

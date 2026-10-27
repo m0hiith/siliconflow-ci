@@ -29,7 +29,7 @@ from app.db import make_engine, make_sessionmaker
 from app.logs import configure_logging
 from app.models import Job, JobStatus, WebhookEvent
 from app.services import artifacts, gates, github_events, outcome, reconciler
-from app.services.github import GitHubApp
+from app.services.github import GitHubApp, RepoSource
 from app.services.webhooks import JOB_KIND
 
 log = logging.getLogger("sfci.worker")
@@ -45,7 +45,7 @@ def backoff(attempts: int) -> timedelta:
 
 
 async def handle_job(
-    session: AsyncSession, job: Job, settings: Settings, github: GitHubApp | None
+    session: AsyncSession, job: Job, settings: Settings, github: RepoSource | None
 ) -> None:
     if job.kind == JOB_KIND:
         event = await session.get(WebhookEvent, job.payload["delivery_id"])
@@ -70,7 +70,7 @@ async def process_one(
     sessionmaker: async_sessionmaker[AsyncSession],
     settings: Settings,
     worker_id: str,
-    github: GitHubApp | None = None,
+    github: RepoSource | None = None,
 ) -> bool:
     """Process the next ready job, if any. Returns whether a job was found."""
     async with sessionmaker() as session, session.begin():

@@ -16,7 +16,7 @@ import time
 from dataclasses import dataclass
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
-from typing import Any
+from typing import Any, Protocol
 from urllib.parse import quote
 
 import httpx
@@ -67,6 +67,32 @@ def _error_from(response: httpx.Response, what: str) -> GitHubError:
     if detail:
         message += f" ({detail})"
     return GitHubError(message, status=response.status_code)
+
+
+class RepoSource(Protocol):
+    """What the worker reads from a repository and its Actions runs: the run's
+    artifact zip and gates.yml at a commit. GitHubApp is the implementation in
+    production; demo mode (app.demo.source) serves recorded fixtures through
+    the same calls, so ingestion and gate evaluation do not know which it is."""
+
+    @property
+    def configured(self) -> bool: ...
+
+    async def aclose(self) -> None: ...
+
+    async def repository_installation_id(self, full_name: str) -> int: ...
+
+    async def find_run_artifact(
+        self, installation_id: int, full_name: str, run_id: int, name: str
+    ) -> dict[str, Any] | None: ...
+
+    async def download_artifact(
+        self, installation_id: int, full_name: str, artifact_id: int, dest: Path, max_bytes: int
+    ) -> int: ...
+
+    async def get_file(
+        self, installation_id: int, full_name: str, path: str, ref: str
+    ) -> bytes | None: ...
 
 
 class GitHubApp:
