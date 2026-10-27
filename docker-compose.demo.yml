@@ -1,0 +1,44 @@
+# Demo mode (docs/demo.md). Start it with `make demo`, which runs
+#
+#   docker compose -p siliconflow-demo --env-file .env.demo \
+#     -f docker-compose.yml -f docker-compose.demo.yml up --build -d
+#
+# It is its own Compose project, so its Postgres data volume, artifact volume
+# and network are separate from the real stack's: real data and demo data
+# never share storage. .env.demo (git-ignored) holds only a generated Postgres
+# password; .env is not read, so the real stack's secrets never reach it. If
+# a GitHub secret is set in your shell anyway, the backend refuses to start.
+#
+# The UI is on http://localhost:8080 and the API on :8000, as for the real
+# stack, so stop that first (`docker compose down`).
+x-demo-env: &demo-env
+  SFCI_DATABASE_URL: postgresql+asyncpg://sfci:${POSTGRES_PASSWORD:?run make demo to create .env.demo}@postgres:5432/sfci_demo
+  SFCI_DEMO_MODE: "true"
+  SFCI_DEMO_DIR: /demo
+  SFCI_WORKER_POLL_INTERVAL_S: "0.5"
+
+x-demo-files: &demo-files
+  - artifacts:/var/lib/sfci/artifacts
+  # Scenarios and fixtures, read-only.
+  - ./demo:/demo:ro
+
+services:
+  postgres:
+    environment:
+      POSTGRES_DB: sfci_demo
+    # Not published: nothing outside the demo project needs the database.
+    ports: !reset []
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sfci -d sfci_demo"]
+
+  migrate:
+    environment: *demo-env
+    volumes: *demo-files
+
+  backend:
+    environment: *demo-env
+    volumes: *demo-files
+
+  worker:
+    environment: *demo-env
+    volumes: *demo-files

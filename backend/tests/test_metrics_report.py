@@ -117,3 +117,39 @@ async def test_figures_match_recorded_rows(report, database_url, session):
     assert "Builds recorded: 6" in text
     assert "75.0% (3/4)" in text
     assert "66.7% (2/3)" in text
+
+
+class _FakeConnection:
+    def __init__(self, database: str) -> None:
+        self.database = database
+        self.closed = False
+
+    async def fetchval(self, sql: str):
+        assert sql == "SELECT current_database()"
+        return self.database
+
+    async def close(self) -> None:
+        self.closed = True
+
+
+async def test_refuses_to_report_on_the_demo_database(report, monkeypatch, capsys):
+    conn = _FakeConnection("sfci_demo")
+
+    async def connect(dsn):
+        return conn
+
+    monkeypatch.setattr(report.asyncpg, "connect", connect)
+    monkeypatch.setenv("SFCI_DATABASE_URL", "postgresql+asyncpg://u:p@h:5432/sfci_demo")
+    assert await report.main() == 2
+    out = capsys.readouterr()
+    assert out.out == ""
+    assert out.err.startswith("DEMO DATA — NOT MEASURED RESULTS")
+    assert conn.closed
+
+
+async def test_reports_on_any_other_database(report, database_url, engine, monkeypatch, capsys):
+    monkeypatch.setenv("SFCI_DATABASE_URL", database_url)
+    assert await report.main() == 0
+    out = capsys.readouterr().out
+    assert out.startswith("SiliconFlow CI - measured results")
+    assert "DEMO" not in out

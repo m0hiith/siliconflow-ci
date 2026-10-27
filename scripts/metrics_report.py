@@ -12,6 +12,9 @@ the Compose stack:
     docker compose exec -T backend python - < scripts/metrics_report.py
 
 Needs only asyncpg, which the backend image already has.
+
+It refuses to report on the demo database (sfci_demo, docs/demo.md): demo
+builds are replayed sample inputs, not measured results.
 """
 import asyncio
 import os
@@ -21,6 +24,9 @@ from typing import Any
 from urllib.parse import urlsplit, urlunsplit
 
 import asyncpg
+
+DEMO_DATABASE = "sfci_demo"
+DEMO_REFUSAL = "DEMO DATA \u2014 NOT MEASURED RESULTS"
 
 # Tables the report reads; all exist at Alembic head.
 TABLES = (
@@ -269,6 +275,9 @@ async def main() -> int:
         return 2
     conn = await asyncpg.connect(asyncpg_dsn(url))
     try:
+        if await conn.fetchval("SELECT current_database()") == DEMO_DATABASE:
+            print(f"{DEMO_REFUSAL}: {DEMO_DATABASE} holds replayed demo inputs; nothing to report", file=sys.stderr)
+            return 2
         data = await collect(conn)
     finally:
         await conn.close()

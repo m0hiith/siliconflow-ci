@@ -106,9 +106,12 @@ services:
     environment:
       SFCI_TEST_ADMIN_DATABASE_URL: postgresql+asyncpg://sfci:${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD (see .env.example)}@postgres:5432/postgres
       SFCI_SCRIPTS_DIR: /scripts
+      SFCI_DEMO_DIR: /demo
     volumes:
       # scripts/metrics_report.py is tested against the same database.
       - ./scripts:/scripts:ro
+      # Demo scenarios are replayed in a throwaway sfci_demo database.
+      - ./demo:/demo:ro
     depends_on:
       postgres:
         condition: service_healthy
