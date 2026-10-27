@@ -15,6 +15,32 @@
 
 **Build, test and release gating for embedded firmware. GitHub Actions runs the builds. SiliconFlow records the results and decides what can ship.**
 
+## Try the demo in 2 minutes
+
+```sh
+make demo        # needs Docker with Compose
+```
+
+Then open <http://localhost:8080> and click **Start tour**. The tour has ten
+steps, each with a plain-English explanation and an optional technical detail.
+
+Demo mode replays recorded CI inputs (webhooks, run reports, artifacts and logs)
+through the real backend. The same API, worker, status transitions, log
+classifier and release gates handle them. Everything runs in a separate
+database (`sfci_demo`), and every page carries a banner saying it is a demo.
+How it stays apart from real data: [docs/demo.md](docs/demo.md).
+
+## SiliconFlow in plain English
+
+Companies like Silicon Labs write the software (firmware) that runs inside
+chips, and a mistake can end up on millions of devices. Every time an engineer
+changes that firmware, an automated system builds it and runs its tests.
+SiliconFlow watches every one of those builds. It checks that the file being
+released is exactly the one that was built and tested, and that it meets the
+team's rules for size and quality. When something goes wrong, it says what
+failed and who should fix it: the developer, the hardware lab or the build
+infrastructure team.
+
 ## At a glance
 
 > **In one sentence:** CI tells you the job went green. SiliconFlow tells you
@@ -205,8 +231,22 @@ Details: [run reports](docs/run-reports.md) · [release gates](docs/release-gate
 
 ## What the UI shows
 
-Screenshots will be added from the first real CI builds. The UI never shows
-mock data, so it has nothing to show until real builds are recorded.
+Outside demo mode, the UI never shows sample data. Demo mode is opt-in,
+separately stored and always labeled. The screenshots below were taken in demo
+mode, so each one carries the demo banner. They show the real backend's results
+for replayed sample inputs, not production builds.
+
+<p align="center">
+  <img src="docs/images/demo/tour.gif" alt="Demo mode: the guided tour walking through a clean build, a compile error, a blocked release, a webhook redelivery, a tampered artifact and analytics" width="100%">
+  <br><em>Demo mode: the guided tour, on replayed sample inputs.</em>
+</p>
+
+| | |
+| --- | --- |
+| ![Demo mode: a compile error classified compile_error with its first error at sensor_logic.c line 74](docs/images/demo/05-compile-error.png) | ![Demo mode: a passed build whose text_bytes_max release gate fails, so it is not release-eligible](docs/images/demo/06-passed-not-releasable.png) |
+| *Demo mode: a compile error, classified, with the first error's file and line* | *Demo mode: passed, but `text_bytes_max` blocks the release* |
+| ![Demo mode: firmware files with server-computed SHA-256 hashes and all release gates passing](docs/images/demo/04-artifacts-gates.png) | ![Demo mode: Analytics with a cortex-m4 flash-size trend and a flaky test](docs/images/demo/10-analytics.png) |
+| *Demo mode: server-computed hashes, every gate passed* | *Demo mode: flash-size trend and a flaky test* |
 
 | Screen | What you see |
 | --- | --- |
@@ -219,7 +259,8 @@ mock data, so it has nothing to show until real builds are recorded.
 
 Prerequisites: the stack is deployed where GitHub can reach it, the GitHub App
 is installed ([docs/github-app.md](docs/github-app.md)), and `SFCI_API_URL` is
-set on the repository.
+set on the repository. Without those, `make demo` replays the same steps as
+recorded inputs ([docs/demo.md](docs/demo.md)).
 
 1. **Push a clean commit to `main`.** In **Builds**, the build appears as
    `queued` and then `running`. Its state comes from GitHub webhooks, and no
@@ -265,8 +306,9 @@ generated: 2026-10-16 04:52 UTC
 No builds recorded. Every figure below needs at least one build.
 ```
 
-This instance has not recorded a real build yet (see Limitations). Once it
-has, the same command reports:
+This instance has not recorded a real build yet (see Limitations). Demo mode's
+builds never count: the script refuses to run against the demo database. Once a
+real build is recorded, the same command reports:
 
 - builds by status, trigger and profile
 - pass rate per profile
@@ -289,7 +331,8 @@ has, the same command reports:
 | [ci/](ci/) | Bash + Python scripts the workflows call (stages, report, size, HIL) |
 | [.github/workflows/](.github/workflows/) | host-cmake, cortex-m4, siwx917-soc, HIL and toolchain-image workflows |
 | [.siliconflow/gates.yml](.siliconflow/gates.yml) | Release gate policy for this repository |
-| [docs/](docs/) | Deep dives: run reports, gates, GitHub App, HIL |
+| [docs/](docs/) | Deep dives: run reports, gates, GitHub App, HIL, demo mode |
+| [demo/](demo/) | Demo mode: replay scenarios and the captured or synthetic fixtures they use |
 
 ## Key terms
 
@@ -299,6 +342,7 @@ has, the same command reports:
 - **Release-eligible**: the build passed *and* every gate passed on a release ref.
 - **`errored`**: the CI infrastructure broke, so the firmware is not blamed.
 - **HIL**: hardware-in-the-loop; flashing a real BRD4338A board and checking it boots.
+- **Demo mode**: an opt-in mode (`make demo`) that replays recorded inputs through the real backend, in its own `sfci_demo` database, under a permanent "Demo mode" banner.
 
 ## Limitations
 
@@ -329,6 +373,10 @@ has, the same command reports:
   cannot post a report.
 - **Single instance.** It runs one worker on a Postgres-backed job queue and
   one firmware repository.
+- **Demo scenarios are not live CI.** They replay captured CI output and
+  some synthetic fixtures (the cortex-m4, siwx917-soc and HIL runs, a tampered
+  zip and a size trend), each listed in [demo/README.md](demo/README.md).
+  Analytics groups replayed history into the week it was replayed.
 
 ## What I would do at company scale
 
