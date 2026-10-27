@@ -1,0 +1,13 @@
+name: passed_not_releasable
+title: Passed, but not releasable
+summary: >-
+  The build passes, but this commit's gates.yml lowers the host-cmake text
+  limit below the firmware's size. The server measures the size from the stored
+  ELF, the text_bytes_max rule fails, and the artifacts are not release-eligible.
+builds:
+  - key: too_big
+    run_id: 9300001
+    sha: b9a6af47d25bce1f94bd78fd73b75bdcf6243626
+    message: Tighten the host-cmake flash budget
+    fixture: host-cmake-passed
+    gates: gates-text-limit-lowered.yml

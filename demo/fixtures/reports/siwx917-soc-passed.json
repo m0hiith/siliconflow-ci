@@ -1,0 +1,47 @@
+{
+  "schema": "sfci.run-report/1",
+  "generated_at": "2026-10-15T07:00:50Z",
+  "github": {
+    "repository": "siliconflow-demo/firmware",
+    "run_id": 1,
+    "run_attempt": 1,
+    "sha": "0000000000000000000000000000000000000000",
+    "ref": "refs/heads/main",
+    "job": "siwx917-soc",
+    "workflow_ref": null
+  },
+  "stages": [
+    {
+      "name": "generate",
+      "status": "passed",
+      "exit_code": 0,
+      "started_at": "2026-10-15T07:00:00Z",
+      "finished_at": "2026-10-15T07:00:15Z",
+      "required": true
+    },
+    {
+      "name": "compile",
+      "status": "passed",
+      "exit_code": 0,
+      "started_at": "2026-10-15T07:00:15Z",
+      "finished_at": "2026-10-15T07:00:48Z",
+      "required": true
+    },
+    {
+      "name": "package",
+      "status": "passed",
+      "exit_code": 0,
+      "started_at": "2026-10-15T07:00:48Z",
+      "finished_at": "2026-10-15T07:00:50Z",
+      "required": true
+    }
+  ],
+  "sdk": null,
+  "toolchain": {},
+  "coverage": null,
+  "cppcheck": null,
+  "size": null,
+  "junit": [],
+  "artifact_name": "sfci-out-siwx917-soc-attempt-1",
+  "manifest": null
+}

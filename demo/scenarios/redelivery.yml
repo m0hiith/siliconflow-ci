@@ -1,0 +1,13 @@
+name: redelivery
+title: The same webhook, delivered three times
+summary: >-
+  GitHub redelivers the run's workflow_run "completed" event (same
+  X-GitHub-Delivery id) twice more. The first copy is accepted; the others are
+  answered "duplicate", no second build appears and the status does not move.
+builds:
+  - key: redelivered
+    run_id: 9400001
+    sha: 8a4d715fc599b326928483bc13b87b063030159d
+    message: Document the debounce timing
+    fixture: host-cmake-passed
+    deliveries: 3

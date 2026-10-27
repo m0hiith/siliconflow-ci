@@ -1,0 +1,192 @@
+name: history
+title: Five weeks of builds
+summary: >-
+  25 builds of host-cmake and cortex-m4 runs, so Analytics has enough data:
+  pass rate, durations, a cortex-m4 flash-size trend and one flaky test (the
+  same commit failed, then passed on re-run).
+builds:
+  - key: h00
+    run_id: 9700001
+    sha: 6968d892baffcb64459ba50ea0706e7be51babdd
+    message: Add CLI command for sensor status
+    fixture: host-cmake-passed
+    days_ago: 35
+  - key: h01
+    workflow: .github/workflows/firmware-ci-cortex-m4.yml
+    job: cortex-m4
+    run_id: 9700002
+    sha: 7fe7a0d33baddb27fcf88e587a150d4fdc01931d
+    message: Refactor threshold detector state
+    fixture: cortex-m4-passed
+    days_ago: 34
+    size: {text_bytes: 8581, data_bytes: 100, bss_bytes: 8564}  # synthetic trend
+  - key: h02
+    run_id: 9700003
+    sha: edf3c944ce5370b821b8ac3845249a3c67c5b1b5
+    message: Add bounce counter tests
+    fixture: host-cmake-passed
+    days_ago: 33
+  - key: h03
+    workflow: .github/workflows/firmware-ci-cortex-m4.yml
+    job: cortex-m4
+    run_id: 9700004
+    sha: cd27b2b4ac99d164136c876d10d3e0c2be2cb198
+    message: Log sensor overruns
+    fixture: cortex-m4-passed
+    days_ago: 31
+    size: {text_bytes: 8788, data_bytes: 100, bss_bytes: 8564}  # synthetic trend
+  - key: h04
+    run_id: 9700005
+    sha: e929baaa2070216e5478ab316ce709dd0f2e08d6
+    message: Tune debounce window
+    fixture: host-cmake-test-failed
+    conclusion: failure
+    days_ago: 30
+  - key: h05
+    run_id: 9700006
+    sha: 1ae841bcc9b44365c7cfc09ca94ebd824f14a188
+    message: Add version command
+    fixture: host-cmake-passed
+    days_ago: 29
+  - key: h06
+    workflow: .github/workflows/firmware-ci-cortex-m4.yml
+    job: cortex-m4
+    run_id: 9700007
+    sha: fc25edb37a83fad8f9be0b577b9b3a6b14b63bf2
+    message: Split HAL init
+    fixture: cortex-m4-passed
+    days_ago: 27
+    size: {text_bytes: 8946, data_bytes: 100, bss_bytes: 8564}  # synthetic trend
+  - key: h07
+    run_id: 9700008
+    sha: 307afe331a85a1b2a7846132c40ffa4de5a5e12f
+    message: Add moving-average reset
+    fixture: host-cmake-passed
+    days_ago: 26
+  - key: h08
+    run_id: 9700009
+    sha: b170900ab3261cc3c8d37d26138e814b15025951
+    message: Rename sensor channels
+    fixture: host-cmake-passed
+    days_ago: 24
+  - key: h09
+    workflow: .github/workflows/firmware-ci-cortex-m4.yml
+    job: cortex-m4
+    run_id: 9700010
+    sha: 67d08396551a4dee113fd00f3f6fcaa1fafe6905
+    message: Add boot banner
+    fixture: cortex-m4-passed
+    days_ago: 23
+    size: {text_bytes: 9055, data_bytes: 100, bss_bytes: 8564}  # synthetic trend
+  - key: h10
+    run_id: 9700011
+    sha: 0ca46f89b8d81bbab3a84215cb58140fc297c697
+    message: Guard against empty window
+    fixture: host-cmake-compile-error
+    conclusion: failure
+    days_ago: 21
+  - key: h11
+    run_id: 9700012
+    sha: 9763624b5c4064c049677b6e5060970c7f35abad
+    message: Add watchdog kick
+    fixture: host-cmake-passed
+    days_ago: 20
+  - key: h12
+    workflow: .github/workflows/firmware-ci-cortex-m4.yml
+    job: cortex-m4
+    run_id: 9700013
+    sha: b6abba2a2b7f83ae3306c7361c60b83340bb27ef
+    message: Report CLI errors
+    fixture: cortex-m4-passed
+    days_ago: 19
+    size: {text_bytes: 9275, data_bytes: 100, bss_bytes: 8564}  # synthetic trend
+  # Same commit, re-run: the noisy-signal test fails, then passes (a flaky test).
+  - key: h13
+    run_id: 9700014
+    sha: fd32b91dde4d8593c8f53fa052d034a437917cd9
+    message: Trim unused HAL calls
+    fixture: host-cmake-test-failed
+    conclusion: failure
+    days_ago: 17
+  - key: h13_rerun
+    run_id: 9700014
+    attempt: 2
+    sha: fd32b91dde4d8593c8f53fa052d034a437917cd9
+    message: Trim unused HAL calls
+    fixture: host-cmake-passed
+    days_ago: 16.9
+  - key: h14
+    workflow: .github/workflows/firmware-ci-cortex-m4.yml
+    job: cortex-m4
+    run_id: 9700015
+    sha: 18a1fbd60e4e6c724e97ff0648f9371405e138d9
+    message: Add noisy-signal threshold test
+    fixture: cortex-m4-passed
+    days_ago: 16
+    size: {text_bytes: 9409, data_bytes: 100, bss_bytes: 8564}  # synthetic trend
+  - key: h15
+    run_id: 9700016
+    sha: 8661542044de7b4a84ab1a8657157bbd14504584
+    message: Speed up moving average
+    fixture: host-cmake-passed
+    days_ago: 14
+  - key: h16
+    workflow: .github/workflows/firmware-ci-cortex-m4.yml
+    job: cortex-m4
+    run_id: 9700017
+    sha: 518af8005193af096abf864683e63059263df499
+    message: Add sensor self-test
+    fixture: cortex-m4-passed
+    days_ago: 13
+    size: {text_bytes: 9617, data_bytes: 100, bss_bytes: 8564}  # synthetic trend
+  - key: h17
+    run_id: 9700018
+    sha: 3c92e03b624d2eb4e82a239fe566d31c6f509d7a
+    message: Document HAL
+    fixture: host-cmake-passed
+    days_ago: 11
+  - key: h18
+    workflow: .github/workflows/firmware-ci-cortex-m4.yml
+    job: cortex-m4
+    run_id: 9700019
+    sha: 21942324bd396ab522d3ab800e22d61a3d66b318
+    message: Add status LED
+    fixture: cortex-m4-passed
+    days_ago: 10
+    size: {text_bytes: 9739, data_bytes: 100, bss_bytes: 8564}  # synthetic trend
+  - key: h19
+    run_id: 9700020
+    sha: 01b88734bf62c473577b7ebfdf680ca1bdf35b68
+    message: Fix CLI parsing of hex
+    fixture: host-cmake-passed
+    days_ago: 8
+  - key: h20
+    workflow: .github/workflows/firmware-ci-cortex-m4.yml
+    job: cortex-m4
+    run_id: 9700021
+    sha: 6585131b62c7d91cf0333eab580d580529b33983
+    message: Add CLI command for sensor status
+    fixture: cortex-m4-passed
+    days_ago: 7
+    size: {text_bytes: 9935, data_bytes: 100, bss_bytes: 8564}  # synthetic trend
+  - key: h21
+    run_id: 9700022
+    sha: 07cc6503f7df7e08e143962b597f43fe09186b39
+    message: Refactor threshold detector state
+    fixture: host-cmake-passed
+    days_ago: 5
+  - key: h22
+    workflow: .github/workflows/firmware-ci-cortex-m4.yml
+    job: cortex-m4
+    run_id: 9700023
+    sha: f53d388eadbae3f5861c907ce3562e4363f5dd97
+    message: Add bounce counter tests
+    fixture: cortex-m4-passed
+    days_ago: 3
+    size: {text_bytes: 10045, data_bytes: 100, bss_bytes: 8564}  # synthetic trend
+  - key: h23
+    run_id: 9700024
+    sha: 2ec7e18358fefa626400f3853811f4e824978f2d
+    message: Log sensor overruns
+    fixture: host-cmake-passed
+    days_ago: 2

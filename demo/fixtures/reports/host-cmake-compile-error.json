@@ -1,0 +1,66 @@
+{
+  "schema": "sfci.run-report/1",
+  "generated_at": "2026-10-15T07:00:07Z",
+  "github": {
+    "repository": "siliconflow-demo/firmware",
+    "run_id": 1,
+    "run_attempt": 1,
+    "sha": "0000000000000000000000000000000000000000",
+    "ref": "refs/heads/main",
+    "job": "host-cmake",
+    "workflow_ref": null
+  },
+  "stages": [
+    {
+      "name": "configure",
+      "status": "passed",
+      "exit_code": 0,
+      "started_at": "2026-10-15T07:00:00Z",
+      "finished_at": "2026-10-15T07:00:04Z",
+      "required": true
+    },
+    {
+      "name": "compile",
+      "status": "failed",
+      "exit_code": 1,
+      "started_at": "2026-10-15T07:00:04Z",
+      "finished_at": "2026-10-15T07:00:07Z",
+      "required": true
+    },
+    {
+      "name": "test",
+      "status": "skipped",
+      "exit_code": null,
+      "started_at": null,
+      "finished_at": null,
+      "required": true
+    },
+    {
+      "name": "analyze",
+      "status": "skipped",
+      "exit_code": null,
+      "started_at": null,
+      "finished_at": null,
+      "required": true
+    },
+    {
+      "name": "package",
+      "status": "skipped",
+      "exit_code": null,
+      "started_at": null,
+      "finished_at": null,
+      "required": true
+    }
+  ],
+  "sdk": null,
+  "toolchain": {
+    "gcc": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "cmake": "cmake version 3.28.3"
+  },
+  "coverage": null,
+  "cppcheck": null,
+  "size": null,
+  "junit": [],
+  "artifact_name": "sfci-out-host-cmake-attempt-1",
+  "manifest": null
+}

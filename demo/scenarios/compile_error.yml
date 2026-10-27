@@ -1,0 +1,13 @@
+name: compile_error
+title: A compile error
+summary: >-
+  A push uses an undeclared identifier in firmware/src/sensor_logic.c. The
+  compile stage fails, so the build fails, and the stage log is classified
+  compile_error with the first error's file and line.
+builds:
+  - key: broken
+    run_id: 9200001
+    sha: f4dc4354d327bf9612768ff655a8a0c511df190d
+    message: Raise the moving-average window limit
+    fixture: host-cmake-compile-error
+    conclusion: failure

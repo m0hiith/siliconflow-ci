@@ -1,0 +1,12 @@
+name: clean_main
+title: A clean build on main
+summary: >-
+  A push to main. Every stage passes, the server re-hashes the firmware, and
+  every release rule in gates.yml passes, so the artifacts are release-eligible.
+builds:
+  - key: clean
+    run_id: 9100001
+    # The captured run's commit (backend/tests/fixtures/ci_runs/README.md).
+    sha: 3c9fc2af798c6d5725210693151df0d61346eb06
+    message: Add hysteresis to threshold detector
+    fixture: host-cmake-passed

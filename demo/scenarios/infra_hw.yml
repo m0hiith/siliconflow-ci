@@ -1,0 +1,19 @@
+name: infra_hw
+title: No J-Link on the hardware runner
+summary: >-
+  A siwx917-soc build passes and the hardware-in-the-loop workflow tries to
+  flash it onto a BRD4338A board, but the runner has no J-Link probe. The flash
+  step exits 75, the hil stage fails and is classified infra_hw: a job for the
+  hardware lab, not the firmware developer. The build itself stays passed, as
+  hardware results never change a finished build.
+builds:
+  - key: soc
+    workflow: .github/workflows/firmware-ci-siwx917-soc.yml
+    job: siwx917-soc
+    run_id: 9500001
+    sha: f3d5e46823778c2af0367cfa4b50e85a6f14f5bd
+    message: Blink the status LED on boot
+    fixture: siwx917-soc-passed
+    hil:
+      run_id: 9500101
+      fixture: hil-no-jlink

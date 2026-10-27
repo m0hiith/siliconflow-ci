@@ -1,0 +1,152 @@
+{
+  "schema": "sfci.run-report/1",
+  "generated_at": "2026-10-15T07:00:23Z",
+  "github": {
+    "repository": "siliconflow-demo/firmware",
+    "run_id": 1,
+    "run_attempt": 1,
+    "sha": "0000000000000000000000000000000000000000",
+    "ref": "refs/heads/main",
+    "job": "cortex-m4",
+    "workflow_ref": null
+  },
+  "stages": [
+    {
+      "name": "configure",
+      "status": "passed",
+      "exit_code": 0,
+      "started_at": "2026-10-15T07:00:00Z",
+      "finished_at": "2026-10-15T07:00:03Z",
+      "required": true
+    },
+    {
+      "name": "compile",
+      "status": "passed",
+      "exit_code": 0,
+      "started_at": "2026-10-15T07:00:03Z",
+      "finished_at": "2026-10-15T07:00:21Z",
+      "required": true
+    },
+    {
+      "name": "package",
+      "status": "passed",
+      "exit_code": 0,
+      "started_at": "2026-10-15T07:00:21Z",
+      "finished_at": "2026-10-15T07:00:22Z",
+      "required": true
+    },
+    {
+      "name": "size",
+      "status": "passed",
+      "exit_code": 0,
+      "started_at": "2026-10-15T07:00:22Z",
+      "finished_at": "2026-10-15T07:00:23Z",
+      "required": true
+    }
+  ],
+  "sdk": null,
+  "toolchain": {},
+  "coverage": null,
+  "cppcheck": null,
+  "size": {
+    "file": "firmware.elf",
+    "text_bytes": 8448,
+    "data_bytes": 100,
+    "bss_bytes": 8564,
+    "sections": [
+      {
+        "name": ".isr_vector",
+        "size": 64,
+        "addr": 0
+      },
+      {
+        "name": ".text",
+        "size": 8376,
+        "addr": 64
+      },
+      {
+        "name": ".ARM.exidx",
+        "size": 8,
+        "addr": 8440
+      },
+      {
+        "name": ".init_array",
+        "size": 8,
+        "addr": 8448
+      },
+      {
+        "name": ".data",
+        "size": 92,
+        "addr": 536870912
+      },
+      {
+        "name": ".bss",
+        "size": 368,
+        "addr": 536871004
+      },
+      {
+        "name": "._heap_stack",
+        "size": 8196,
+        "addr": 536871372
+      },
+      {
+        "name": ".ARM.attributes",
+        "size": 48,
+        "addr": 0
+      },
+      {
+        "name": ".comment",
+        "size": 38,
+        "addr": 0
+      },
+      {
+        "name": ".debug_line",
+        "size": 22169,
+        "addr": 0
+      },
+      {
+        "name": ".debug_line_str",
+        "size": 325,
+        "addr": 0
+      },
+      {
+        "name": ".debug_info",
+        "size": 64542,
+        "addr": 0
+      },
+      {
+        "name": ".debug_abbrev",
+        "size": 15810,
+        "addr": 0
+      },
+      {
+        "name": ".debug_aranges",
+        "size": 1272,
+        "addr": 0
+      },
+      {
+        "name": ".debug_str",
+        "size": 6963,
+        "addr": 0
+      },
+      {
+        "name": ".debug_frame",
+        "size": 2476,
+        "addr": 0
+      },
+      {
+        "name": ".debug_loclists",
+        "size": 12716,
+        "addr": 0
+      },
+      {
+        "name": ".debug_rnglists",
+        "size": 642,
+        "addr": 0
+      }
+    ]
+  },
+  "junit": [],
+  "artifact_name": "sfci-out-cortex-m4-attempt-1",
+  "manifest": null
+}

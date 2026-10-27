@@ -1,0 +1,13 @@
+name: tamper
+title: A tampered artifact
+summary: >-
+  The run's report lists firmware.bin with one SHA-256, but the file in the
+  Actions artifact has been changed. The server's re-hash disagrees with the
+  manifest, so nothing is stored, and the artifacts_verified rule fails.
+builds:
+  - key: tampered
+    run_id: 9600001
+    sha: 2b30c143c6b058927e9f5f38b773224d9e88177c
+    message: Update the boot banner
+    fixture: host-cmake-passed
+    artifact: host-cmake-tampered

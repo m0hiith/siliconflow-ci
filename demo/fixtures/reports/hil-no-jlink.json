@@ -1,0 +1,49 @@
+{
+  "schema": "sfci.run-report/1",
+  "generated_at": "2026-10-15T07:00:09Z",
+  "github": {
+    "repository": "siliconflow-demo/firmware",
+    "run_id": 1,
+    "run_attempt": 1,
+    "sha": "0000000000000000000000000000000000000000",
+    "ref": "refs/heads/main",
+    "job": "hil",
+    "workflow_ref": null
+  },
+  "stages": [
+    {
+      "name": "fetch",
+      "status": "passed",
+      "exit_code": 0,
+      "started_at": "2026-10-15T07:00:00Z",
+      "finished_at": "2026-10-15T07:00:06Z",
+      "required": true
+    },
+    {
+      "name": "flash",
+      "status": "failed",
+      "exit_code": 75,
+      "started_at": "2026-10-15T07:00:06Z",
+      "finished_at": "2026-10-15T07:00:09Z",
+      "required": true
+    },
+    {
+      "name": "test",
+      "status": "skipped",
+      "exit_code": null,
+      "started_at": null,
+      "finished_at": null,
+      "required": true
+    }
+  ],
+  "sdk": null,
+  "toolchain": {},
+  "coverage": null,
+  "cppcheck": null,
+  "size": null,
+  "junit": [],
+  "artifact_name": null,
+  "manifest": null,
+  "profile": "siwx917-hil",
+  "build_id": "bld_00000000000000000000000000"
+}
