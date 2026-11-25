@@ -1,0 +1,16 @@
+# Only used by builds whose context is the repository root, i.e.
+# deploy/render/Dockerfile. The Compose builds use ./backend and ./frontend.
+*
+!backend/requirements.txt
+!backend/alembic.ini
+!backend/alembic
+!backend/app
+!frontend
+!demo
+!deploy/render
+**/__pycache__
+**/*.pyc
+frontend/node_modules
+frontend/dist
+frontend/test-results
+frontend/*.tsbuildinfo

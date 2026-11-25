@@ -30,6 +30,9 @@ classifier and release gates handle them. Everything runs in a separate
 database (`sfci_demo`), and every page carries a banner saying it is a demo.
 How it stays apart from real data: [docs/demo.md](docs/demo.md).
 
+To host the demo publicly, [render.yaml](render.yaml) deploys it to Render's
+free tier in one step: [docs/render.md](docs/render.md).
+
 ## SiliconFlow in plain English
 
 Companies like Silicon Labs write the software (firmware) that runs inside
@@ -331,7 +334,8 @@ real build is recorded, the same command reports:
 | [ci/](ci/) | Bash + Python scripts the workflows call (stages, report, size, HIL) |
 | [.github/workflows/](.github/workflows/) | host-cmake, cortex-m4, siwx917-soc, HIL and toolchain-image workflows |
 | [.siliconflow/gates.yml](.siliconflow/gates.yml) | Release gate policy for this repository |
-| [docs/](docs/) | Deep dives: run reports, gates, GitHub App, HIL, demo mode |
+| [docs/](docs/) | Deep dives: run reports, gates, GitHub App, HIL, demo mode, Render |
+| [deploy/render/](deploy/render/) + [render.yaml](render.yaml) | Single-container demo deployment on Render |
 | [demo/](demo/) | Demo mode: replay scenarios and the captured or synthetic fixtures they use |
 
 ## Key terms

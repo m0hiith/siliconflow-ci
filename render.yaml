@@ -1,0 +1,42 @@
+# Render Blueprint: SiliconFlow CI in demo mode, on Render's free tier.
+# Setup and limits: docs/render.md. Demo mode replays recorded CI inputs
+# through the real backend under a permanent banner (docs/demo.md); it never
+# holds GitHub credentials, so no secrets are configured here.
+services:
+  - type: web
+    name: siliconflow-ci
+    runtime: docker
+    plan: free
+    region: singapore
+    branch: main
+    autoDeploy: true
+    dockerfilePath: ./deploy/render/Dockerfile
+    dockerContext: .
+    healthCheckPath: /api/v1/health/ready
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: siliconflow-demo-db
+          property: connectionString
+      - key: SFCI_DEMO_MODE
+        value: "true"
+      - key: SFCI_DEMO_DIR
+        value: /demo
+      # Demo mode refuses SFCI_ENV=prod.
+      - key: SFCI_ENV
+        value: dev
+      - key: SFCI_WORKER_POLL_INTERVAL_S
+        value: "0.5"
+      # No persistent disk on the free tier: start each boot from empty.
+      - key: SFCI_DEMO_RESET_ON_BOOT
+        value: "true"
+
+databases:
+  - name: siliconflow-demo-db
+    plan: free
+    region: singapore
+    # Demo mode only runs against a database with this name.
+    databaseName: sfci_demo
+    user: sfci
+    postgresMajorVersion: "16"
+    ipAllowList: []
