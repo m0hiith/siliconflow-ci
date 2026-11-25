@@ -1,6 +1,11 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import "@fontsource-variable/inter";
+import "@fontsource-variable/jetbrains-mono";
+import "@fontsource/barlow/500.css";
+import "@fontsource/barlow/600.css";
+import "@fontsource/barlow/700.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ApiError } from "./api/client";
 import { Layout } from "./components/Layout";
@@ -9,6 +14,7 @@ import { EmptyState } from "./components/States";
 import { Analytics } from "./pages/Analytics";
 import { BuildDetail } from "./pages/BuildDetail";
 import { Builds } from "./pages/Builds";
+import { HowItWorks } from "./pages/HowItWorks";
 import { Overview } from "./pages/Overview";
 import "./styles.css";
 
@@ -33,6 +39,7 @@ createRoot(document.getElementById("root")!).render(
             <Route path="builds" element={<Builds />} />
             <Route path="builds/:buildId" element={<BuildDetail />} />
             <Route path="analytics" element={<Analytics />} />
+            <Route path="how-it-works" element={<HowItWorks />} />
             <Route path="*" element={<EmptyState title="Page not found" />} />
           </Route>
         </Routes>
